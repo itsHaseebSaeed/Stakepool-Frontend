@@ -1,0 +1,26 @@
+@use '../custom' as *;
+
+.success-modal-bg {
+  background-image: linear-gradient(to right, #9a47b9, #4d2d9f);
+}
+
+.successfully_deposited_amount {
+  font-size: 35px;
+  font-weight: bold;
+  background-image: linear-gradient(to right, #27cec4, #a5ff97);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.successfully_deposited_amount-bg {
+  background-image: linear-gradient(to right, #27cec4, #a5ff97);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.successfully_deposited_amount_font-size {
+  font-size: 35px;
+}
+
+.success_modal-local-font-size {
+  font-size: 16px;
+}

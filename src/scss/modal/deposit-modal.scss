@@ -1,0 +1,74 @@
+@use '../custom' as *;
+
+.deposit-modal-bg {
+  background-color: $primary3;
+}
+
+.deposit-modal-shape {
+  border-radius: 10px;
+  padding: 2px;
+}
+
+.white {
+  color: #fff;
+}
+
+input[type="number"] {
+  width: 180%;
+  padding: 5px 0;
+  border: 0ch;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+input[type="number"]::-webkit-input-placeholder {
+  color: white;
+  font-weight: 200;
+}
+
+.deposit-modal-heading {
+  font-size: 24px;
+  color: $neutral10;
+}
+
+.deposit-modal-available {
+  font-size: 16px;
+  color: $neutral7;
+}
+
+.deposit-modal-amount {
+  color: $neutral10;
+}
+
+.deposit-modal-dollars {
+  color: $neutral10;
+  font-weight: 200;
+}
+
+.deposit-modal-deposit-field {
+  background-color: $primary5;
+}
+.deposit-modal-deposit-field-shape {
+  border-radius: 5px;
+}
+
+.deposit-modal-deposit-field-tokens {
+  color: $primary6;
+}
+
+.deposit-modal-deposit-button {
+  background-color: $secondary3;
+  border-radius: 5px;
+  border: 0;
+}
+
+.deposit-modal-amount-percentage {
+  background-color: $primary5;
+  border-radius: 5px;
+  border: 0;
+  color: #fff;
+}
+
+.deposit-modal-amount-percentage:hover {
+  background-color: $primary4;
+}

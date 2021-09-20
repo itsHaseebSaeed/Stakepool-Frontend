@@ -1,0 +1,58 @@
+@use '../custom' as *;
+
+#heading {
+  background: $background-lighter;
+  height: 8%;
+}
+
+@media only screen and (max-width: 768px) {
+  #heading {
+    background: $background-lighter;
+    height: 10%;
+  }
+}
+.txt-decoration {
+  text-decoration: none;
+}
+
+#heading .title {
+  color: $heading-color;
+  margin-bottom: 0%;
+  text-decoration: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .title {
+    color: $heading-color;
+    margin-bottom: 0%;
+    text-decoration: none;
+    font-size: 25px;
+  }
+}
+.title {
+  color: $heading-color;
+  margin-bottom: 0%;
+  text-decoration: none;
+}
+
+.wallet {
+  color: #ffffff;
+  border: 1px solid $white;
+  border-radius: 12px;
+}
+
+.router-links {
+  color: #ffffff;
+  text-decoration: none;
+}
+.router-links:hover {
+  color: #27cec35d;
+}
+
+.router-link-active {
+  color: $active-links-color;
+}
+
+.router-link-exact-active {
+  color: $active-links-color;
+}

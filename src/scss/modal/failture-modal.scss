@@ -1,0 +1,12 @@
+@use '../custom' as *;
+
+.failture-modal-heading {
+  background-image: linear-gradient(to right, #ff0000, #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.failture-see-more-button {
+  background-color: $secondary3;
+  border-radius: 5px;
+}

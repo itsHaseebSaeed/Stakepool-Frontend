@@ -1,0 +1,77 @@
+@use '../custom' as *;
+
+.account_title {
+  font-size: 24px;
+  color: #fff;
+}
+
+.account_deposit_card {
+  background-image: linear-gradient(to right, $secondary, $primary);
+  border-radius: 20px;
+}
+
+.account_deposit_card_part_two {
+  background: $background-lighter;
+  border-radius: 20px;
+}
+
+.account_deposit_title {
+  color: #fff;
+  font-size: 24px;
+}
+
+.account_deposit_amount {
+  color: #fff;
+  font-size: 44px;
+}
+
+.account_token_title {
+  color: #fff;
+  font-size: 20px;
+}
+
+.account_token_amount {
+  font-size: 34px;
+  font-weight: 600;
+  background-image: linear-gradient(to right, #ba81cf, #6886d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.account_winning_odds {
+  color: #fff;
+  font-size: 16px;
+}
+.account_winning_odds_value {
+  color: $primary8;
+  font-size: 16px;
+}
+
+.account_reduce_stakes_withdraw_button {
+  font-size: 16px;
+  font-weight: 600;
+  border-color: $secondary3 !important;
+  background-color: $primary2 !important;
+  width: 100%;
+  color: $white !important;
+}
+
+.account_deposit_button {
+  background-color: $secondary3 !important;
+  font-size: 16px;
+  font-weight: 600;
+  color: $white !important;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.account_prize_svg {
+  font-size: 34px;
+  color: $primary5;
+}
+
+.account_time_font {
+  color: white;
+
+  font-size: 16px;
+}

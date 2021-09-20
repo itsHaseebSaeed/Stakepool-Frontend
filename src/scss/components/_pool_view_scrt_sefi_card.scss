@@ -1,0 +1,78 @@
+@use '../custom' as *;
+
+.pool_view_card {
+  background-color: $background-lighter;
+  border-radius: 20px;
+}
+
+.prize_amount {
+  font-size: 55px;
+  font-weight: bold;
+  background-image: linear-gradient(to right, #ba81cf, #6886d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.deposit_button {
+  color: $white !important;
+  background-color: $deposit-button !important;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.date_title {
+  color: #a396b8;
+  font-size: 16px;
+}
+
+.date_digit {
+  color: #87e8e3;
+  background-color: #136762;
+  font-size: 24px;
+  padding-right: 12px;
+  font-weight: bold;
+  border-radius: 3px;
+  margin: auto;
+}
+
+.date_digit_inside_stats {
+  color: #87e8e3;
+  background-color: #9c2ef0;
+  font-size: 24px;
+  padding-right: 12px;
+  font-weight: bold;
+  border-radius: 3px;
+  margin: auto;
+}
+
+.colon {
+  color: #87e8e3;
+}
+
+.breadcrumb-item {
+  color: #d6a9f9;
+}
+
+.logo-size {
+  max-height: 50px;
+}
+
+// .logo-size-pool-stats {
+//   max-height: 20px;
+// }
+
+#pool_stats_card_title {
+  font-size: 34px;
+}
+
+.pool_stats_subheadings {
+  font-size: 16px;
+}
+
+.pool_stats_scrt_to_dollar {
+  color: #136762;
+}
+
+.pool_past_prizes {
+  color: #53dfd6;
+}

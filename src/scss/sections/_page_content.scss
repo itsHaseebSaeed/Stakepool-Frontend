@@ -1,0 +1,17 @@
+@use '../custom' as *;
+.page-content {
+  background: $background-darker;
+  min-height: 77%;
+
+  padding: 0;
+  margin: 0;
+}
+
+@media only screen and (max-width: 768px) {
+  .page-content {
+    background: $background-darker;
+    height: 90%;
+    padding: 0;
+    margin: 0;
+  }
+}

@@ -1,0 +1,12 @@
+@use '../custom' as *;
+.footing {
+  background: $background-lighter;
+  height: 15%;
+}
+
+@media only screen and (max-width: 768px) {
+  .footing {
+    background: $background-lighter;
+    height: 0%;
+  }
+}

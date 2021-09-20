@@ -1,0 +1,78 @@
+@use '../custom' as *;
+
+.container {
+  padding-right: 8%;
+  padding-left: 8%;
+}
+
+.Pools_view_title {
+  color: #fff;
+}
+
+.top1 {
+  padding-top: 1%;
+}
+.top2 {
+  padding-top: 2%;
+}
+.top3 {
+  padding-top: 3%;
+}
+.top4 {
+  padding-top: 4%;
+}
+.top5 {
+  padding-top: 5%;
+}
+.top6 {
+  padding-top: 6%;
+}
+
+.stakepool_info_card {
+  background-image: linear-gradient(to right, $secondary, $primary);
+  border-radius: 20px;
+}
+@media only screen and (max-width: 768px) {
+  .mountain_image {
+    height: 20%;
+  }
+}
+.mountain_image {
+  height: 20%;
+}
+
+.secondary_heading {
+  color: $secondary-heading;
+  font-family: Poppins;
+  font-size: 14px;
+}
+
+.w1 {
+  font-weight: 100;
+}
+
+.w2 {
+  font-weight: 200;
+}
+
+.w3 {
+  font-weight: 300;
+}
+.w4 {
+  font-weight: 400;
+}
+.w5 {
+  font-weight: 500;
+}
+.w6 {
+  font-weight: 600;
+}
+.w7 {
+  font-weight: 700;
+}
+.w8 {
+  font-weight: 800;
+}
+.w9 {
+  font-weight: 900;
+}

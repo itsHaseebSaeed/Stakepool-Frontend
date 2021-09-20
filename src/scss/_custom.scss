@@ -1,0 +1,66 @@
+$purple-light: #9a47b9 !default;
+$purple-dark: #4d2d9f !default;
+
+$pink: #d63384 !default;
+
+$white: #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black: #000 !default;
+
+$neutral1: #131216;
+$neutral2: #1c1c22;
+$neutral3: #26252d;
+$neutral4: #393743;
+$neutral5: #555365;
+$neutral6: #9e9cab;
+$neutral7: #bebdc7;
+$neutral8: #d4d3d9;
+$neutral9: #f4f4f6;
+$neutral10: #faf9fa;
+
+$primary: $purple-dark;
+$primary1: #062221;
+$primary2: #0a3431;
+$primary3: #0f4d4a;
+$primary4: #136762;
+$primary5: #1a8983;
+$primary6: #20aca3;
+$primary7: #27cec4;
+$primary8: #53dfd6;
+$primary9: #87e8e3;
+$primary10: #a9efeb;
+
+$secondary1: #500a85;
+$secondary2: #8310db;
+$secondary3: #9c2ef0;
+$secondary4: #bb70f5;
+$secondary5: #d6a9f9;
+$secondary6: #f1e2fd;
+
+$secondary: $purple-light;
+$heading-color: $secondary4 !default;
+$deposit-button: $secondary3 !default;
+$background-lighter: $primary2 !default;
+$background-darker: $primary1 !default;
+$active-links-color: $primary7 !default;
+$secondary-heading: $secondary5 !default;
+
+$font-family: Poppins;
+
+$accordion-icon-color: $primary;
+$accordion-icon-active-color: $secondary;
+
+$accordion-button-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$accordion-icon-color}'><path fill-rule='evenodd' d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/>  <path d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z'/></svg>") !default;
+$accordion-button-active-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$accordion-icon-active-color}'><path fill-rule='evenodd' d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/>  <path d='M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z'/></svg>") !default;
+// scss-docs-end accordion-variables
+
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
