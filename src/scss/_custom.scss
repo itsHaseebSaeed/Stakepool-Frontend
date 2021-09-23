@@ -55,6 +55,10 @@ $secondary-heading: $secondary5 !default;
 
 $font-family: Poppins;
 
+body {
+  font-family: $font-family;
+}
+
 $accordion-icon-color: $primary;
 $accordion-icon-active-color: $secondary;
 

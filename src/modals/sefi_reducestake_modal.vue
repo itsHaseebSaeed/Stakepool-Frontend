@@ -47,6 +47,7 @@
                 <span class="deposit-modal-available">Deposited</span>
               </div>
               <div
+                v-if="balance"
                 class="
                   col-8
                   d-flex
@@ -55,46 +56,58 @@
                   white
                 "
               >
-                <span class="deposit-modal-amount"
-                  >{{ coinConvert(balance, 6, "human", 2) }} SEFI
-                  <span class="deposit-modal-dollars">
-                    (${{
-                      coinConvert(
-                        coinConvert(balance, 6, "human", 2) *
-                          sefi_token_current_price,
-                        0,
-                        "human",
-                        2
-                      )
-                    }})</span
-                  >
+                <span class="deposit-modal-amount pe-1"
+                  >{{ coinConvert(balance, 6, "human", 2) }}
                 </span>
-              </div>
-            </div>
-
-            <!-- <div class="row m-0 p-0 mt-3 g-0">
-              <div
-                class="col-6 d-flex justify-content-start align-items-center"
-              >
-                <span class="deposit-modal-available"
-                  >Available for withdraw</span
+                <span class="d-flex align-items-center">
+                  <img
+                    src="../images/sefi_logo.png"
+                    alt="LOGO Image"
+                    class="img-fluid mini-logo-size"
+                  />
+                </span>
+                SEFI
+                <span class="pool_past_prizes ps-2">
+                  (${{
+                    coinConvert(
+                      coinConvert(balance, 6, "human", 2) *
+                        sefi_token_current_price,
+                      0,
+                      "human",
+                      2
+                    )
+                  }})</span
                 >
               </div>
+
               <div
                 class="
-                  col-6
+                  col-8
                   d-flex
                   justify-content-end
                   align-items-center
                   white
                 "
+                v-else
               >
-                <span class="deposit-modal-amount"
-                  >200 SEFI
-                  <span class="deposit-modal-dollars"> ($100)</span>
+                <span class="deposit-modal-amount">
+                  <span class="col-2" style="font-size: 20px">&#128269;</span>
+                  <a
+                    @click="sefiStakepoolCreateViewingKey()"
+                    class="createViewingKey"
+                  >
+                    Create or Get Viewing Key
+                  </a>
                 </span>
               </div>
-            </div> -->
+            </div>
+
+            <div class="row m-0 p-0 mt-3 g-0 text-white fw-lighter">
+              <span class="">
+                This will remove your SEFI tokens from the rewards contract. You
+                will have to withdraw your SEFI to see it in your wallet
+              </span>
+            </div>
 
             <div class="row m-0 p-0 mt-3" v-if="overflow_warning">
               <span class="text-danger"
@@ -241,6 +254,7 @@ import {
   useSefiStakepoolStore,
   useSefiContractStore,
 } from "../../src/contracts";
+import BigNumber from "bignumber.js";
 
 export default {
   data() {
@@ -250,37 +264,49 @@ export default {
       underflow_warning: false,
       on_going_transaction: undefined,
       successful: undefined,
-      total_deposits: undefined,
-      staked_total: undefined,
+      // available_tokens_for_withdrawl: undefined,
+      current_reduce_stakes_amount: undefined,
     };
   },
 
   computed: {
     ...mapState(useSefiContractStore, ["sefi_token_current_price"]),
-    ...mapState(useSefiStakepoolStore, ["balance"]),
+    ...mapState(useSefiStakepoolStore, [
+      "balance",
+      "available_tokens_for_withdrawl",
+    ]),
   },
 
   methods: {
     coinConvert,
-    ...mapActions(useSefiStakepoolStore, ["sefiStakepoolTriggerWithdraw"]),
-    ...mapActions(useSefiContractStore, [
-      "createOrGetViewingKey",
-      "getSefiContractBalance",
+    ...mapActions(useSefiStakepoolStore, [
+      "sefiStakepoolTriggerWithdraw",
+      "sefiStakepoolCreateViewingKey",
+      "syncer_function_for_trigger_withdraw_and_redelegate",
     ]),
     async reduce_stakes_check(reduceStakesAmount) {
-      console.log(this.balance);
-      console.log(reduceStakesAmount * 1000000);
+      let bg_reduceStakesAmount = new BigNumber(reduceStakesAmount);
+      bg_reduceStakesAmount = bg_reduceStakesAmount
+        .multipliedBy(1000000)
+        .decimalPlaces(0);
+      let bg_balance = new BigNumber(this.balance);
 
-      if (reduceStakesAmount * 1000000 > this.balance) {
+      // console.log(bg_reduceStakesAmount);
+      // console.log(bg_balance);
+
+      if (bg_reduceStakesAmount.isGreaterThan(bg_balance)) {
         this.overflow_warning = true;
-      } else if (reduceStakesAmount <= 0 || reduceStakesAmount == undefined) {
+      } else if (
+        bg_reduceStakesAmount.isLessThanOrEqualTo(0) ||
+        bg_reduceStakesAmount.isNaN()
+      ) {
         this.underflow_warning = true;
       } else {
         this.on_going_transaction = true;
         this.overflow_warning = false;
         this.underflow_warning = false;
         let temp_array = await this.sefiStakepoolTriggerWithdraw(
-          reduceStakesAmount
+          bg_reduceStakesAmount
         );
         // let temp_array = [true, "worked"];
 
@@ -291,12 +317,23 @@ export default {
           this.successful = false;
           this.$refs.closeBtn.click();
           this.clearFields();
+          this.$emit("sucessfulReduceStakes", {
+            available_tokens_for_withdrawl: this.available_tokens_for_withdrawl,
+            denom: "SEFI",
+            current_reduce_stakes_amount: bg_reduceStakesAmount.toNumber(),
+          });
         } else {
+          let res = setTimeout(
+            this.syncer_function_for_trigger_withdraw_and_redelegate,
+            5000
+          );
+
           this.clearFields();
           this.on_going_transaction = false;
           this.$refs.closeBtn.click();
-          //call fail modal and psas this error
-          console.log(temp_array[2]);
+          this.$emit("failedReduceStake", {
+            error_message: temp_array[1],
+          });
         }
       }
     },

@@ -24,28 +24,40 @@
               justify-content-lg-start justify-content-center
             "
           >
-            ${{
-              coinConvert(
-                coinConvert(balance, 6, "human", 2) * sefi_token_current_price,
-                0,
-                "human",
-                2
-              )
-            }}
+            <div v-if="balance >= 9999">
+              ${{
+                coinConvert(
+                  coinConvert(balance, 6, "human", 2) *
+                    sefi_token_current_price,
+                  0,
+                  "human",
+                  2
+                )
+              }}
+            </div>
+
+            <div v-else>$0</div>
           </div>
 
           <div
             class="row d-flex justify-content-center align-items-center white"
             v-else
           >
-            <span class="deposit-modal-amount d-flex justify-content-start">
-              <img src="../images/vk.png" />
-              <span
+            <span
+              class="
+                deposit-modal-amount
+                d-flex
+                justify-content-start
+                deposit-modal-amount
+              "
+            >
+              <span class="col-2" style="font-size: 20px">&#128269;</span>
+              <a
                 @click="sefiStakepoolCreateViewingKey()"
-                class="deposit-modal-dollars"
+                class="createViewingKey deposit-modal-dollars"
               >
-                Create Viewing or Get Key
-              </span>
+                Create or Get Viewing Key
+              </a>
             </span>
           </div>
         </div>
@@ -56,7 +68,7 @@
             <div class="row p-0">
               <span class="col-6 align-self-center d-flex justify-content-end">
                 <img
-                  src="src/images/sefi_logo.png"
+                  src="../images/sefi_logo.png"
                   alt="LOGO Image"
                   class="img-fluid logo-size"
                 />
@@ -71,13 +83,23 @@
           </div>
 
           <div class="col-lg-3 mt-lg-0 mt-md-3 align-self-center">
-            <div class="row account_token_amount d-flex justify-content-center">
+            <div
+              v-if="balance"
+              class="row account_token_amount d-flex justify-content-center"
+            >
               {{ coinConvert(balance, 6, "human", 2) }}
+            </div>
+            <div
+              v-else
+              class="row account_token_amount d-flex justify-content-center"
+            >
+              0
             </div>
             <div class="row account_winning_odds d-flex justify-content-center">
               Winning odds
             </div>
             <div
+              v-if="balance != 0"
               class="
                 row
                 account_winning_odds_value
@@ -85,7 +107,20 @@
                 justify-content-center
               "
             >
-              1 in {{ coinConvert(total_deposits / balance, 0, "human", 2) }}
+              {{
+                coinConvert((balance / total_deposits) * 100, 0, "human", 2)
+              }}%
+            </div>
+            <div
+              v-else
+              class="
+                row
+                account_winning_odds_value
+                d-flex
+                justify-content-center
+              "
+            >
+              0
             </div>
           </div>
 
@@ -101,7 +136,7 @@
                 "
               >
                 <img
-                  src="src/images/gift.png"
+                  src="../images/gift.png"
                   alt="LOGO Image"
                   class="img-fluid logo-size"
                 />

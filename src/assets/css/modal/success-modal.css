@@ -1,11 +1,15 @@
 @charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
+body {
+  font-family: Poppins;
+}
+
 /*!
  * Bootstrap v5.1.0 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -11123,6 +11127,7 @@ textarea.form-control-lg {
   background-image: linear-gradient(to right, #27cec4, #a5ff97);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-align: center;
 }
 
 .successfully_deposited_amount-bg {
@@ -11137,6 +11142,14 @@ textarea.form-control-lg {
 
 .success_modal-local-font-size {
   font-size: 16px;
+}
+
+.logo-size-successModal {
+  max-height: 40px;
+}
+
+.mini-logo-size {
+  max-height: 20px;
 }
 
 /*# sourceMappingURL=success-modal.css.map */

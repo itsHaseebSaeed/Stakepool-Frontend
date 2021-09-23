@@ -1,10 +1,10 @@
 <template>
 <div  id="heading">
-  <div class="container-fluid h-100 " >
+  <div class="container h-100 " >
     <div class="row h-100 align-items-center">
-      <div class="col-md-4 " >
-        <router-link class="title" to=/pools>
-        <h3 class=" m-auto d-flex justify-content-center title ">
+      <div class="col-md-4 g-0" >
+        <router-link class="title " to=/Stakepool-Frontend/>
+        <h3 class=" m-auto d-flex justify-content-start title ">
           StakePool
           </h3>
   
@@ -12,11 +12,11 @@
       </div>
 
       <div class="col-md-4 d-flex justify-content-center  ">
-        <router-link class="router-links p-md-2 px-2" active-class="router-link-active" to=/pools >Pools</router-link>
-        <router-link class="router-links p-md-2 px-2" exact-active-class="router-link-active" to=/accounts >Accounts</router-link>
+        <router-link class="router-links p-md-2 px-2" active-class="router-link-active" to=/Stakepool-Frontend/ >Pools</router-link>
+        <router-link class="router-links p-md-2 px-2" exact-active-class="router-link-active" to=/Stakepool-Frontend/accounts >Accounts</router-link>
       </div>
 
-      <div class="col-md-4 d-flex justify-content-center">
+      <div class="col-md-4 d-flex justify-content-end">
         <wallet-info class="float-end wallet p-md-2   d-none d-md-block "></wallet-info>
 
 

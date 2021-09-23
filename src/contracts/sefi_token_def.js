@@ -38,9 +38,10 @@ export const SefiTokenDefinition = {
         msg
       );
       this.sefi_token_balance = res.balance.amount;
+      console.log("SEFI balance: " + this.sefi_token_balance);
       this.sefi_token_balance_in_usd =
         (this.sefi_token_balance / 1000000) * this.sefi_token_current_price;
-      // console.log(this.sefi_token_balance);
+      console.log(this.sefi_token_balance);
     },
 
     async getCurrentSefiPrice() {
@@ -69,9 +70,8 @@ export const SefiTokenDefinition = {
         console.log(this.sefi_token_key);
       } else {
         this.sefi_token_key = vkey;
-
-        await this.getSefiContractBalance();
       }
+      await this.getSefiContractBalance();
     },
 
     async createViewingKey() {

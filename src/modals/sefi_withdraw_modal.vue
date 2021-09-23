@@ -71,6 +71,7 @@
                 >
               </div>
               <div
+                v-if="available_tokens_for_withdrawl"
                 class="
                   col-6
                   d-flex
@@ -79,26 +80,59 @@
                   white
                 "
               >
-                <span class="deposit-modal-amount"
+                <span class="deposit-modal-amount pe-2"
                   >{{
                     coinConvert(available_tokens_for_withdrawl, 6, "human", 2)
                   }}
-                  SEFI
-                  <span class="deposit-modal-dollars">
-                    (${{
+                </span>
+                <span class="d-flex align-items-center">
+                  <img
+                    src="../images/sefi_logo.png"
+                    alt="LOGO Image"
+                    class="img-fluid mini-logo-size"
+                  />
+                </span>
+                SEFI
+
+                <span
+                  v-if="available_tokens_for_withdrawl"
+                  class="pool_past_prizes ps-2"
+                >
+                  (${{
+                    coinConvert(
                       coinConvert(
-                        coinConvert(
-                          available_tokens_for_withdrawl,
-                          6,
-                          "human",
-                          2
-                        ) * sefi_token_current_price,
-                        0,
+                        available_tokens_for_withdrawl,
+                        6,
                         "human",
                         2
-                      )
-                    }})</span
+                      ) * sefi_token_current_price,
+                      0,
+                      "human",
+                      2
+                    )
+                  }})</span
+                >
+                <span v-else class="pool_past_prizes ps-2"> ($0)</span>
+              </div>
+
+              <div
+                class="
+                  col-6
+                  d-flex
+                  justify-content-end
+                  align-items-center
+                  white
+                "
+                v-else
+              >
+                <span class="deposit-modal-amount">
+                  <span class="col-2" style="font-size: 20px">&#128269;</span>
+                  <span
+                    @click="sefiStakepoolCreateViewingKey()"
+                    class="createViewingKey"
                   >
+                    Create or Get Viewing Key
+                  </span>
                 </span>
               </div>
             </div>
@@ -246,7 +280,7 @@ import {
   useSefiStakepoolStore,
   useSefiContractStore,
 } from "../../src/contracts";
-
+import BigNumber from "bignumber.js";
 export default {
   data() {
     return {
@@ -262,11 +296,14 @@ export default {
   },
 
   mounted() {
-    this.timer = setTimeout(this.sefiStakepoolGetAvailableForWithdrawl, 1000);
+    // this.timer = setTimeout(this.sefiStakepoolGetAvailableForWithdrawl, 1000);
   },
 
   computed: {
-    ...mapState(useSefiContractStore, ["sefi_token_current_price"]),
+    ...mapState(useSefiContractStore, [
+      "sefi_token_current_price",
+      "sefi_token_balance",
+    ]),
     ...mapState(useSefiStakepoolStore, ["available_tokens_for_withdrawl"]),
   },
 
@@ -275,33 +312,65 @@ export default {
     ...mapActions(useSefiStakepoolStore, [
       "sefiStakepoolGetAvailableForWithdrawl",
       "sefiStakepoolWithdraw",
+      "sefiStakepoolCreateViewingKey",
+      "syncer_function_for_withdraw",
     ]),
     ...mapActions(useSefiContractStore, [
       "createOrGetViewingKey",
       "getSefiContractBalance",
     ]),
     async withdraw_check(withdraw_amount) {
-      if (withdraw_amount * 1000000 > this.available_tokens_for_withdrawl) {
+      let bg_withdraw_amount = new BigNumber(withdraw_amount);
+      bg_withdraw_amount = bg_withdraw_amount
+        .multipliedBy(1000000)
+        .decimalPlaces(0);
+      let bg_available_tokens_for_withdrawl = new BigNumber(
+        this.available_tokens_for_withdrawl
+      );
+
+      if (bg_withdraw_amount.isGreaterThan(bg_available_tokens_for_withdrawl)) {
+        // console.log(bg_withdraw_amount);
+        // console.log(bg_available_tokens_for_withdrawl);
         this.overflow_warning = true;
-      } else if (withdraw_amount <= 0 || withdraw_amount == undefined) {
+      } else if (
+        bg_withdraw_amount.isLessThan(0) ||
+        bg_withdraw_amount.isNaN()
+      ) {
         this.underflow_warning = true;
       } else {
         this.on_going_transaction = true;
         this.overflow_warning = false;
         this.underflow_warning = false;
 
-        let temp_array = await this.sefiStakepoolWithdraw(withdraw_amount);
-        // let temp_array = [true, "sucess"];
+        let temp_array = await this.sefiStakepoolWithdraw(
+          bg_withdraw_amount.toNumber()
+        );
+        await this.getSefiContractBalance();
 
         this.successful = temp_array[0];
 
         if (this.successful) {
           this.on_going_transaction = false;
           this.successful = false;
-
           this.$refs.closeBtn.click();
+          this.clearFields();
+          this.$emit("sucessfulWithdraw", {
+            current_withdraw_amount: bg_withdraw_amount.toNumber(),
+            denom: "SEFI",
+            balance: this.sefi_token_balance,
+          });
+        } else {
+          let timer = setTimeout(this.syncer_function_for_withdraw, 4000);
+          let timer2 = setTimeout(this.getSefiContractBalance, 4000);
+
+          console.log(this.available_tokens_for_withdrawl);
 
           this.clearFields();
+          this.on_going_transaction = false;
+          this.$refs.closeBtn.click();
+          this.$emit("failedWithdraw", {
+            error_message: temp_array[1],
+          });
         }
       }
     },

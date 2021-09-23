@@ -10,6 +10,7 @@
   background-image: linear-gradient(to right, #27cec4, #a5ff97);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-align: center;
 }
 .successfully_deposited_amount-bg {
   background-image: linear-gradient(to right, #27cec4, #a5ff97);
@@ -23,4 +24,11 @@
 
 .success_modal-local-font-size {
   font-size: 16px;
+}
+.logo-size-successModal {
+  max-height: 40px;
+}
+
+.mini-logo-size {
+  max-height: 20px;
 }

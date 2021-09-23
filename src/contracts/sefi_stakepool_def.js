@@ -3,7 +3,7 @@ import { SefiTokenContractAddress } from "../contracts/index";
 import { useViewingKeyStore as useVKs } from "@stakeordie/griptape-vue.js";
 import { useWalletStore as useWallet } from "@stakeordie/griptape-vue.js";
 const fees = {
-  gas: "810000",
+  gas: "910000",
 };
 export const SefiStakepoolDefinition = {
   state: {
@@ -77,11 +77,11 @@ export const SefiStakepoolDefinition = {
       let temp_array = [];
 
       temp_array = res.past_results.past_rewards;
-      console.log(temp_array);
+      // console.log(temp_array);
       this.past_rewards = temp_array;
 
       for (var i = 0; i < temp_array.length; i++) {
-        console.log("working");
+        // console.log("working");
 
         this.past_rewards[i][0] = temp_array[i][0];
         var date = new Date(temp_array[i][1] * 1000);
@@ -104,11 +104,11 @@ export const SefiStakepoolDefinition = {
 
     async sefiStakepoolGetTotalSefiRewards() {
       await this.sefiStakepoolGetTotalSefiDeposits();
-      console.log("Total Sefi staked", typeof this.total_deposits);
+      // console.log("Total Sefi staked", typeof this.total_deposits);
       if (this.total_deposits > 0) {
         this.total_rewards = ((this.total_deposits * 0.48) / 365) * 7;
         this.total_rewards = this.total_rewards.toString();
-        console.log("TOTAL rewards", typeof this.total_rewards);
+        // console.log("TOTAL rewards", typeof this.total_rewards);
       }
     },
 
@@ -132,6 +132,7 @@ export const SefiStakepoolDefinition = {
         msg
       );
       this.balance = res.balance.amount;
+      console.log("balance" + this.balance);
     },
 
     async sefiStakepoolGetAvailableForWithdrawl() {
@@ -152,6 +153,10 @@ export const SefiStakepoolDefinition = {
         res = await this.scrtClient.queryContract(this.contractAddress, msg);
         this.available_tokens_for_withdrawl =
           res.available_tokens_for_withdrawl.amount;
+        console.log(
+          "Amount available for withdrawl: " +
+            this.available_tokens_for_withdrawl
+        );
       } catch (e) {
         console.log(e);
       }
@@ -165,8 +170,8 @@ export const SefiStakepoolDefinition = {
         await this.get_viewing_key_helper();
       }
 
-      console.log(this.wallet_address);
-      console.log(this.vk);
+      // console.log(this.wallet_address);
+      // console.log(this.vk);
 
       const msg = {
         user_past_records: {
@@ -180,15 +185,15 @@ export const SefiStakepoolDefinition = {
       } catch (err) {
         console.log(err);
       }
-      console.log(res);
+      // console.log(res);
       let temp_array = [];
 
       temp_array = res.user_past_records.winning_history;
-      console.log(temp_array);
+      // console.log(temp_array);
       this.user_past_records = temp_array;
 
       for (var i = 0; i < temp_array.length; i++) {
-        console.log("working");
+        // console.log("working");
 
         this.user_past_records[i][0] = temp_array[i][0];
         var date = new Date(temp_array[i][1] * 1000);
@@ -202,8 +207,8 @@ export const SefiStakepoolDefinition = {
 
       this.user_past_records = temp_array;
 
-      console.log(this.user_past_records);
-      console.log(temp_array);
+      // console.log(this.user_past_records);
+      // console.log(temp_array);
     },
 
     //HELPER FUNCTIONS
@@ -254,6 +259,25 @@ export const SefiStakepoolDefinition = {
 
     async syncer_function_for_vk() {
       await this.sefiStakepoolGetBalance();
+      await this.sefiStakepoolGetUserPastRecords();
+      await this.sefiStakepoolGetAvailableForWithdrawl();
+    },
+
+    async syncer_function_for_deposit() {
+      console.log("deposit syncer Working");
+      await this.sefiStakepoolGetBalance();
+      await this.sefiStakepoolGetTotalSefiRewards();
+    },
+    async syncer_function_for_trigger_withdraw_and_redelegate() {
+      console.log("trigger syncer Working");
+
+      await this.sefiStakepoolGetTotalSefiRewards();
+      await this.sefiStakepoolGetBalance();
+      await this.sefiStakepoolGetAvailableForWithdrawl();
+    },
+    async syncer_function_for_withdraw() {
+      console.log("withdraw syncer Working");
+
       await this.sefiStakepoolGetAvailableForWithdrawl();
     },
   },
@@ -265,19 +289,19 @@ export const SefiStakepoolDefinition = {
         try {
           const vks = useVKs();
           let vkey = await vks.createViewingKey(this.contractAddress);
-          console.log("Inside set or get viewing #sefi_token_def");
+          // console.log("Inside set or get viewing #sefi_token_def");
           this.vk = vkey;
           console.log(this.vk);
         } catch (err) {
           console.log(err);
         }
       } else {
-        console.log(this.vk);
+        // console.log(this.vk);
       }
       this.syncer_function_for_vk();
     },
     async sefiStakepoolDeposit(depositAmount) {
-      let final_deposit_amount_in_uSefi = (depositAmount * 1000000).toString();
+      let final_deposit_amount_in_uSefi = depositAmount.toString();
       const Handlemsg = { deposit: {} };
       let res;
       // const fees = {
@@ -299,23 +323,23 @@ export const SefiStakepoolDefinition = {
           undefined,
           fees
         );
-        await this.sefiStakepoolGetTotalSefiDeposits();
-        await this.sefiStakepoolGetBalance();
+        await this.syncer_function_for_deposit();
         return [
           true,
           final_deposit_amount_in_uSefi,
           this.total_deposits,
           this.balance,
-          "sucess",
+          "success",
         ];
       } catch (e) {
+        await this.syncer_function_for_deposit();
         console.log(e);
         return [false, 0, 0, 0, e];
       }
     },
 
     async sefiStakepoolWithdraw(amount) {
-      let final_withdraw_amount_in_uSefi = (amount * 1000000).toString();
+      let final_withdraw_amount_in_uSefi = amount.toString();
       const msg = { withdraw: {} };
       if (final_withdraw_amount_in_uSefi > 0) {
         const msg = { withdraw: { amount: final_withdraw_amount_in_uSefi } };
@@ -327,19 +351,19 @@ export const SefiStakepoolDefinition = {
             undefined,
             fees
           );
-          await this.sefiStakepoolGetTotalSefiDeposits();
-          await this.sefiStakepoolGetBalance();
-          await this.sefiStakepoolGetAvailableForWithdrawl();
+          await this.syncer_function_for_withdraw();
+
           return [true, "success"];
         } catch (e) {
-          console.log("Sefi withdraw ERROR");
-          return [false, "error"];
+          console.log(e);
+          await this.syncer_function_for_withdraw();
+          return [false, e];
         }
       }
     },
 
     async sefiStakepoolTriggerWithdraw(amount) {
-      let final_trigger_amount_in_uSefi = (amount * 1000000).toString();
+      let final_trigger_amount_in_uSefi = amount.toString();
       const msg = {
         trigger_withdraw: { amount: final_trigger_amount_in_uSefi },
       };
@@ -351,18 +375,17 @@ export const SefiStakepoolDefinition = {
           undefined,
           fees
         );
-        console.log(res);
-        await this.sefiStakepoolGetTotalSefiDeposits();
-        await this.sefiStakepoolGetBalance();
-        await this.sefiStakepoolGetAvailableForWithdrawl();
-        return [true, "success"];
+        // console.log(res);
+        await this.syncer_function_for_trigger_withdraw_and_redelegate();
+        return [true, this.available_tokens_for_withdrawl];
       } catch (e) {
+        // await this.syncer_function_for_trigger_withdraw_and_redelegate();
         console.log(e);
-        return [true, e];
+        return [false, e];
       }
     },
     async sefiStakepoolredelegate(amount) {
-      let final_deposit_amount_in_uSefi = (amount * 1000000).toString();
+      let final_deposit_amount_in_uSefi = amount.toString();
       let msg = { redelegate: {} };
       if (amount > 0) {
         msg = { redelegate: { amount: final_deposit_amount_in_uSefi } };
@@ -375,7 +398,7 @@ export const SefiStakepoolDefinition = {
           undefined,
           fees
         );
-        console.log(res);
+        // console.log(res);
       } catch (e) {}
     },
   },

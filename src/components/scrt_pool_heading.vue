@@ -4,7 +4,7 @@
     <div class="row p-0 mt-3" id="breadcrumbs">
       <nav aria-label="breadcrumb" class="p-0">
         <ol class="breadcrumb">
-          <router-link class="breadcrumb-item txt-decoration " to=/pools>POOL</router-link>
+          <router-link class="breadcrumb-item txt-decoration " to=/Stakepool-Frontend/>POOL</router-link>
           <span class="breadcrumb-item" >SCRT</span>
         </ol>
       </nav>
@@ -14,7 +14,7 @@
 
       <div class="col-md-1 col-2 align-self-center">
         <img
-          src="src/images/logo.png"
+          src="../images/logo.png"
           alt="LOGO Image"
           class="img-fluid logo-size"
         />

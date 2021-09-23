@@ -4,8 +4,8 @@
       <TitleCard />
       <TotalDepositsCard />
 
-     <router-link to=/scrtpool class="txt-decoration"> <ScrtCard /> </router-link>
-     <router-link to=/sefipool class="txt-decoration">  <SefiCard /> </router-link>
+     <router-link to=/Stakepool-Frontend/scrtpool class="txt-decoration"> <ScrtCard /> </router-link>
+     <router-link to=/Stakepool-Frontend/sefipool class="txt-decoration">  <SefiCard /> </router-link>
      
 
 

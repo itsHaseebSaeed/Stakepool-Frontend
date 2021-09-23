@@ -12,7 +12,7 @@
   >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content deposit-modal-shape">
-        <div class="container-fluid success-modal-bg deposit-modal-shape p-4">
+        <div class="h-100 success-modal-bg deposit-modal-shape p-4">
           <div class="row m-0 p-0 deposit-modal-shape">
             <div class="row m-0 p-0 g-0"></div>
             <div

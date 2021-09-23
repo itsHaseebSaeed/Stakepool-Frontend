@@ -56,14 +56,22 @@
                 "
                 v-if="sefi_token_balance"
               >
-                <span class="deposit-modal-amount"
-                  >{{ coinConvert(sefi_token_balance, 6, "human", 1) }} SEFI
-                  <span class="deposit-modal-dollars">
-                    (${{
-                      coinConvert(sefi_token_balance_in_usd, 6, "human", 1)
-                    }})</span
-                  >
+                <span class="pe-2">
+                  {{ coinConvert(sefi_token_balance, 6, "human", 1) }}
                 </span>
+                <span class="d-flex align-items-center">
+                  <img
+                    src="../images/sefi_logo.png"
+                    alt="LOGO Image"
+                    class="img-fluid mini-logo-size"
+                  />
+                </span>
+                SEFI
+                <span class="ps-1 pool_past_prizes">
+                  (${{
+                    coinConvert(sefi_token_balance_in_usd, 6, "human", 1)
+                  }})</span
+                >
               </div>
               <div
                 class="
@@ -76,12 +84,12 @@
                 v-else
               >
                 <span class="deposit-modal-amount">
-                  <img src="../images/vk.png" />
+                  <span class="col-2" style="font-size: 20px">&#128269;</span>
                   <span
                     @click="createOrGetViewingKey()"
-                    class="deposit-modal-dollars"
+                    class="createViewingKey"
                   >
-                    Create Viewing Key
+                    Create or Get Viewing Key
                   </span>
                 </span>
               </div>
@@ -94,7 +102,7 @@
             </div>
 
             <div class="row m-0 p-0 mt-3" v-if="underflow_warning">
-              <span class="text-danger">*Invalid number </span>
+              <span class="text-danger">*Minimum deposit 1 SEFI </span>
             </div>
 
             <div
@@ -199,7 +207,7 @@
                 min="0"
                 max="sefi_token_balance"
               >
-                Desposit
+                Deposit
               </button>
             </div>
 
@@ -229,13 +237,12 @@
 
 <script>
 import { mapState, mapActions } from "pinia";
-import { useWalletStore } from "@stakeordie/griptape-vue.js";
 import { coinConvert } from "@stakeordie/griptape.js";
 import {
   useSefiStakepoolStore,
   useSefiContractStore,
 } from "../../src/contracts";
-
+import BigNumber from "bignumber.js";
 export default {
   data() {
     return {
@@ -260,43 +267,60 @@ export default {
 
   methods: {
     coinConvert,
-    ...mapActions(useSefiStakepoolStore, ["sefiStakepoolDeposit"]),
+    ...mapActions(useSefiStakepoolStore, [
+      "sefiStakepoolDeposit",
+      "syncer_function_for_deposit",
+    ]),
     ...mapActions(useSefiContractStore, [
       "createOrGetViewingKey",
       "getSefiContractBalance",
     ]),
     async deposit_check(depositamount) {
-      if (depositamount * 1000000 > this.sefi_token_balance) {
+      let bg_depositamount = new BigNumber(depositamount);
+      bg_depositamount = bg_depositamount
+        .multipliedBy(1000000)
+        .decimalPlaces(0);
+      // console.log(bg_depositamount);
+
+      let bg_sefi_total_balance = new BigNumber(this.sefi_token_balance);
+      // console.log(bg_sefi_total_balance);
+
+      if (bg_depositamount.isGreaterThan(bg_sefi_total_balance)) {
+        console.log(coinConvert(this.sefi_token_balance, 6, "human", 6));
+        console.log(depositamount);
+
         this.overflow_warning = true;
-      } else if (depositamount <= 0 || depositamount == undefined) {
+      } else if (bg_depositamount.isLessThan(1) || bg_depositamount.isNaN()) {
         this.underflow_warning = true;
       } else {
         this.on_going_transaction = true;
         this.overflow_warning = false;
         this.underflow_warning = false;
-        let temp_array = await this.sefiStakepoolDeposit(depositamount);
+        let temp_array = await this.sefiStakepoolDeposit(
+          bg_depositamount.toNumber()
+        );
 
         this.successful = temp_array[0];
         depositamount = temp_array[1];
         this.total_deposits = temp_array[2];
         this.staked_total = temp_array[3];
-
         console.log("THE TOTAL DEPOSITS", this.total_deposits);
+        await this.getSefiContractBalance();
 
         if (this.successful) {
           this.on_going_transaction = false;
           this.successful = false;
-
           this.$refs.closeBtn.click();
-
           this.clearFields();
           this.$emit("sucessfulDeposit", {
-            current_deposits: depositamount,
-            denom: "Sefi",
+            current_deposits: bg_depositamount.toNumber(),
+            denom: "SEFI",
             pool_share: (this.staked_total / this.total_deposits) * 100,
             total_deposits: this.staked_total,
           });
         } else {
+          let res = setTimeout(this.getSefiContractBalance, 4000);
+          let res2 = setTimeout(this.syncer_function_for_deposit, 4000);
           this.clearFields();
           this.on_going_transaction = false;
           this.$refs.closeBtn.click();
@@ -304,8 +328,6 @@ export default {
           this.$emit("failedDeposit", {
             error_message: temp_array[4],
           });
-
-          console.log(temp_array[4]);
         }
       }
     },
@@ -320,12 +342,19 @@ export default {
     },
 
     async Percentage(percentage) {
+      // console.log(coinConvert(this.sefi_token_balance, 6, "human", 6));
+      // console.log(
+      //   coinConvert(this.sefi_token_balance, 6, "human", 6) * percentage
+      // );
+
       this.depositamount = coinConvert(
         coinConvert(this.sefi_token_balance, 6, "human", 6) * percentage,
         0,
         "human",
         6
       );
+
+      // console.log(this.depositamount);
     },
   },
 };

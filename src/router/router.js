@@ -1,29 +1,31 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Pools from "../views/Pools.vue";
-import Accounts from "../views/Accounts.vue";
-import ScrtPool from "../views/scrt_pool_sidekick.vue";
-import SefiPool from "../views/sefi_pool_sidekick.vue";
+// import Pools from "../views/Pools.vue";
+// import Accounts from "../views/Accounts.vue";
+// import ScrtPool from "../views/scrt_pool_sidekick.vue";
+// import SefiPool from "../views/sefi_pool_sidekick.vue";
 // import DepositModal from "../modals/deposit_modal.vue";
+
+const base = "/Stakepool-Frontend";
 const routes = [
   {
-    path: "/pools",
+    path: base + "/",
     name: "Pools",
-    component: Pools,
+    component: () => import("../views/Pools.vue"),
   },
   {
-    path: "/accounts",
+    path: base + "/accounts",
     name: "Accounts",
-    component: Accounts,
+    component: () => import("../views/Accounts.vue"),
   },
   {
-    path: "/scrtpool",
+    path: base + "/scrtpool",
     name: "SCRTPOOL",
-    component: ScrtPool,
+    component: () => import("../views/scrt_pool_sidekick.vue"),
   },
   {
-    path: "/sefipool",
+    path: base + "/sefipool",
     name: "Sefi pool",
-    component: SefiPool,
+    component: () => import("../views/sefi_pool_sidekick.vue"),
   },
 ];
 const router = createRouter({

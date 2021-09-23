@@ -11,8 +11,8 @@
         <div class="row g-0 align-items-center">
           <div class="col-6 pool_stats_subheadings">{{ line[1] }}</div>
           <div class="col-6 d-flex justify-content-end">
-            <span class="pool_past_prizes">
-              ${{
+            <span class="pool_past_prizes pe-2">
+              (${{
                 coinConvert(
                   coinConvert(line[0], 6, "humans", 1) *
                     sefi_token_current_price,
@@ -20,10 +20,18 @@
                   "human",
                   1
                 )
-              }}
+              }})
             </span>
-            <span class="pool_past_prizes">
+
+            <span class="text-white">
               {{ coinConvert(line[0], 6, "humans", 1) }}
+            </span>
+            <span class="d-inline ms-2 d-flex align-items-center">
+              <img
+                src="../images/sefi_logo.png"
+                alt="Logo"
+                class="mini-logo-size"
+              />
             </span>
           </div>
         </div>

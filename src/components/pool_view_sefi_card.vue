@@ -4,12 +4,16 @@
       <div
         class="col-lg-3 d-flex justify-content-lg-start justify-content-center"
       >
-        <span
+        <div
           class="d-inline ms-2 d-flex align-items-center justify-content-start"
         >
-          <img src="../images/sefi_logo.png" alt="Logo" height="20px" />
-        </span>
-        <span class="pool_stats_scrt_to_dollar ms-2 text-white">SEFI</span>
+          <img
+            src="../images/sefi_logo.png"
+            alt="Logo"
+            class="mini-logo-size"
+          />
+        </div>
+        <div class="pool_stats_scrt_to_dollar ms-2 text-white">SEFI</div>
       </div>
       <div class="col-lg-4 text-white m-auto mb-3">
         <div class="d-block clearfix">

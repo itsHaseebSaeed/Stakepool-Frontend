@@ -6,26 +6,63 @@
 
     <ScrtDepositModal />
     <SefiDepositModal
-      @sucessfulDeposit="successModal"
+      @sucessfulDeposit="depositSuccessModal"
       @failedDeposit="failureModal"
     />
-    <SuccessModal
+    <DepositSuccessModal
       :current_deposits="current_deposits"
       :denom="denom"
       :pool_share="pool_share"
       :total_deposits="total_deposits"
     />
+    <ReduceStakedSuccessModal
+      @openWithdrawModal="withdrawModal"
+      :available_tokens_for_withdrawl="available_tokens_for_withdrawl"
+      :denom="denom"
+      :current_reduce_stakes_amount="current_reduce_stakes_amount"
+    />
+
+    <WithdrawSuccessModal
+      :current_withdraw_amount="current_withdraw_amount"
+      :denom="denom"
+      :balance="balance"
+    />
+
     <ScrtWithdrawModal />
-    <SefiWithdrawModal />
+    <SefiWithdrawModal
+      @failedWithdraw="failureModal"
+      @sucessfulWithdraw="withdrawSuccessModal"
+    />
     <ScrtReduceStakeModal />
-    <SefiReduceStakeModal />
+    <SefiReduceStakeModal
+      @sucessfulReduceStakes="reduceStakesSuccessModal"
+      @failedReduceStake="failureModal"
+    />
 
     <FailedModal :error_message="error_message" />
 
     <div
       data-bs-toggle="modal"
+      data-bs-target="#sefiWithdrawModal"
+      ref="sefiWithdrawModalBtn"
+    ></div>
+
+    <div
+      data-bs-toggle="modal"
+      data-bs-target="#ReduceStakesSuccessModal"
+      ref="ReduceStakesSuccessModalBtn"
+    ></div>
+
+    <div
+      data-bs-toggle="modal"
       data-bs-target="#sefiSuccessModal"
-      ref="successModalBtn"
+      ref="DepositSuccessModalBtn"
+    ></div>
+
+    <div
+      data-bs-toggle="modal"
+      data-bs-target="#withdrawSuccessModal"
+      ref="WithdrawSuccessModalBtn"
     ></div>
 
     <div
@@ -37,24 +74,11 @@
 </template>
 <script>
 import "/src/assets/css/style.css";
-import Footing from "./components/footing.vue";
-import Heading from "./components/heading.vue";
-import PageContent from "./components/page_content.vue";
-import ScrtDepositModal from "./modals/scrt_deposit_modal.vue";
-import SefiDepositModal from "./modals/sefi_deposit_modal.vue";
-import SuccessModal from "./modals/sefi_success_modal.vue";
-import SefiWithdrawModal from "./modals/sefi_withdraw_modal.vue";
-import FailedModal from "./modals/failture_modal.vue";
-
-import ScrtWithdrawModal from "./modals/scrt_withdraw_modal.vue";
-import ScrtReduceStakeModal from "./modals/scrt_reducestake_modal.vue";
-import SefiReduceStakeModal from "./modals/sefi_reducestake_modal.vue";
-
 import { useSefiStakepoolStore } from "../src/contracts";
 import { useSefiContractStore } from "../src/contracts";
 
 import { mapState, mapActions } from "pinia";
-import { coinConvert } from "@stakeordie/griptape.js";
+import { defineAsyncComponent } from "vue";
 
 export default {
   data() {
@@ -65,26 +89,58 @@ export default {
       total_deposits: undefined,
       denom: undefined,
       error_message: undefined,
+      current_reduce_stakes_amount: undefined,
+      available_tokens_for_withdrawl: undefined,
+      current_withdraw_amount: undefined,
+      balance: undefined,
     };
   },
   components: {
-    Heading,
-    PageContent,
-    Footing,
-    ScrtDepositModal,
-    SefiDepositModal,
-    SuccessModal,
-    SefiWithdrawModal,
-    ScrtReduceStakeModal,
-    ScrtWithdrawModal,
-    SefiReduceStakeModal,
-    FailedModal,
+    Heading: defineAsyncComponent(() => import("./components/heading.vue")),
+    PageContent: defineAsyncComponent(() =>
+      import("./components/page_content.vue")
+    ),
+    Footing: defineAsyncComponent(() => import("./components/footing.vue")),
+    ScrtDepositModal: defineAsyncComponent(() =>
+      import("./modals/scrt_deposit_modal.vue")
+    ),
+    SefiDepositModal: defineAsyncComponent(() =>
+      import("./modals/sefi_deposit_modal.vue")
+    ),
+
+    SefiWithdrawModal: defineAsyncComponent(() =>
+      import("./modals/sefi_withdraw_modal.vue")
+    ),
+    ScrtReduceStakeModal: defineAsyncComponent(() =>
+      import("./modals/scrt_reducestake_modal.vue")
+    ),
+    ScrtWithdrawModal: defineAsyncComponent(() =>
+      import("./modals/scrt_withdraw_modal.vue")
+    ),
+    SefiReduceStakeModal: defineAsyncComponent(() =>
+      import("./modals/sefi_reducestake_modal.vue")
+    ),
+    FailedModal: defineAsyncComponent(() =>
+      import("./modals/failture_modal.vue")
+    ),
+    DepositSuccessModal: defineAsyncComponent(() =>
+      import("./modals/success_deposit_modal.vue")
+    ),
+    ReduceStakedSuccessModal: defineAsyncComponent(() =>
+      import("./modals/success_reduce_stakes_modal.vue")
+    ),
+    WithdrawSuccessModal: defineAsyncComponent(() =>
+      import("./modals/success_withdraw_modal.vue")
+    ),
   },
   created() {
     this.sefiStakepoolPoolViewEntryPoint();
-    this.sefiStakepoolAccountViewEntryPoint();
   },
   mounted() {
+    this.timer0 = window.setTimeout(
+      this.sefiStakepoolAccountViewEntryPoint,
+      1000
+    );
     this.timer = window.setInterval(this.sefiStakepoolSyncTimer, 1000);
     this.timer2 = window.setTimeout(this.getSefiContractBalance, 1000);
   },
@@ -96,7 +152,7 @@ export default {
       "sefiStakepoolAccountViewEntryPoint",
     ]),
     ...mapActions(useSefiContractStore, ["getSefiContractBalance"]),
-    async successModal({
+    async depositSuccessModal({
       current_deposits,
       denom,
       pool_share,
@@ -106,16 +162,34 @@ export default {
       this.pool_share = pool_share;
       this.total_deposits = total_deposits;
       this.denom = denom;
-      this.$refs.successModalBtn.click();
+      this.$refs.DepositSuccessModalBtn.click();
     },
+    async reduceStakesSuccessModal({
+      current_reduce_stakes_amount,
+      denom,
+      available_tokens_for_withdrawl,
+    }) {
+      this.current_reduce_stakes_amount = current_reduce_stakes_amount;
+      this.available_tokens_for_withdrawl = available_tokens_for_withdrawl;
+      this.denom = denom;
+      this.$refs.ReduceStakesSuccessModalBtn.click();
+    },
+    async withdrawSuccessModal({ current_withdraw_amount, denom, balance }) {
+      this.current_withdraw_amount = current_withdraw_amount;
+      this.denom = denom;
+      this.balance = balance;
+      this.$refs.WithdrawSuccessModalBtn.click();
+    },
+
     async failureModal({ error_message }) {
       this.error_message = error_message;
       this.$refs.failtureModalBtn.click();
+    },
+    async withdrawModal() {
+      this.$refs.sefiWithdrawModalBtn.click();
     },
   },
 };
 </script>
 
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
-</style>
+<style></style>

@@ -45,6 +45,15 @@ input[type="number"]::-webkit-input-placeholder {
   font-weight: 200;
 }
 
+.createViewingKey {
+  color: $primary10;
+  text-decoration: none;
+}
+
+.createViewingKey:hover {
+  color: $primary6;
+}
+
 .deposit-modal-deposit-field {
   background-color: $primary5;
 }

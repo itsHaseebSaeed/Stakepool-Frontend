@@ -3,7 +3,7 @@
     <div class="row mt-3 p-3 stakepool_info_card align-items-center">
       <div class="col-6">
         <img
-          src="src/images/mountains.png"
+          src="../images/mountains.png"
           alt="Mountains Image"
           class="img-fluid"
         />

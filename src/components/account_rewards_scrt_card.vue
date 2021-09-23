@@ -6,19 +6,43 @@
       <div class="row g-0 align-items-center">
         <div class="col-6 pool_stats_subheadings">Augest 4th</div>
         <div class="col-6 d-flex justify-content-end">
-          <span class="pool_past_prizes"> $980000.77 </span>
+          <span class="pool_past_prizes pe-2"> ($980000.7) </span>
+          <span class="text-white"> 8800 </span>
+          <span class="d-inline ms-2 d-flex align-items-center">
+            <img
+              src="../images/sefi_logo.png"
+              alt="Logo"
+              class="mini-logo-size"
+            />
+          </span>
         </div>
       </div>
       <div class="row g-0 align-items-center">
         <div class="col-6 pool_stats_subheadings">September 9th</div>
         <div class="col-6 d-flex justify-content-end">
-          <span class="pool_past_prizes"> $980000.77 </span>
+          <span class="pool_past_prizes pe-2"> ($980000.7) </span>
+          <span class="text-white"> 8800 </span>
+          <span class="d-inline ms-2 d-flex align-items-center">
+            <img
+              src="../images/sefi_logo.png"
+              alt="Logo"
+              class="mini-logo-size"
+            />
+          </span>
         </div>
       </div>
       <div class="row g-0 align-items-center">
         <div class="col-6 pool_stats_subheadings">October 12th</div>
         <div class="col-6 d-flex justify-content-end">
-          <span class="pool_past_prizes"> $980000.77 </span>
+          <span class="pool_past_prizes pe-2"> ($980000.7) </span>
+          <span class="text-white"> 8800 </span>
+          <span class="d-inline ms-2 d-flex align-items-center">
+            <img
+              src="../images/sefi_logo.png"
+              alt="Logo"
+              class="mini-logo-size"
+            />
+          </span>
         </div>
       </div>
     </div>

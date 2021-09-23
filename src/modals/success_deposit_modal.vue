@@ -20,6 +20,7 @@
                 class="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                ref="closeBtn"
               ></button>
             </div>
             <div class="row g-0 mt-3">
@@ -30,15 +31,22 @@
                     justify-content-center
                     successfully_deposited_amount
                   "
-                  >Succesfully deposited!</span
+                  >Successfully deposited!</span
                 >
               </div>
             </div>
             <div class="row g-0 mt-3">
               <div class="d-flex justify-content-center">
-                <span class="successfully_deposited_amount pe-2">{{
-                  coinConvert(current_deposits, 6, "human", 1)
+                <span class="successfully_deposited_amount pe-3">{{
+                  coinConvert(current_deposits, 6, "human", 2)
                 }}</span>
+                <span class="d-flex justify-content-center align-items-center">
+                  <img
+                    src="../images/sefi_logo.png"
+                    alt="LOGO Image"
+                    class="img-fluid logo-size-successModal"
+                  />
+                </span>
                 <span class="successfully_deposited_amount_font-size white">{{
                   denom
                 }}</span>
@@ -60,11 +68,11 @@
               </div>
             </div>
 
-            <div class="row g-0 mt-3 mb-5">
+            <div class="row g-0 mt-3">
               <div class="d-flex justify-content-center">
                 <span class="pe-2 success_modal-local-font-size white"
                   >You now have
-                  {{ coinConvert(total_deposits, 6, "human", 1) }}
+                  {{ coinConvert(total_deposits, 6, "human", 2) }}
                   {{ denom }} in the Stake Pool!
                 </span>
               </div>

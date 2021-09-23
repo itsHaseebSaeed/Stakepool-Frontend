@@ -33,7 +33,7 @@
             <div class="row p-0">
               <span class="col-6 align-self-center d-flex justify-content-end">
                 <img
-                  src="src/images/logo.png"
+                  src="../images/logo.png"
                   alt="LOGO Image"
                   class="img-fluid logo-size"
                 />
