@@ -1,11 +1,10 @@
 import axios from "axios";
-import { SefiTokenContractAddress } from "../contracts/index";
 import { useViewingKeyStore as useVKs } from "@stakeordie/griptape-vue.js";
 import { useWalletStore as useWallet } from "@stakeordie/griptape-vue.js";
 const fees = {
   gas: "810000",
 };
-export const SefiStakepoolDefinition = {
+export const ScrtStakepoolDefinition = {
   state: {
     start_time: undefined,
     end_time: undefined,
@@ -16,7 +15,7 @@ export const SefiStakepoolDefinition = {
     total_deposits: 0,
     vk: undefined,
     wallet_address: undefined,
-    past_rewards: undefined,
+    past_records: undefined,
     user_past_records: undefined,
     time_left: 0,
     days1: 0,
@@ -29,18 +28,18 @@ export const SefiStakepoolDefinition = {
     secs2: 0,
   },
   queries: {
-    async sefiStakepoolPoolViewEntryPoint() {
-      await this.sefiStakepoolGetLotteryInfo();
-      await this.sefiStakepoolGetTotalSefiRewards();
+    async scrtStakepoolPoolViewEntryPoint() {
+      await this.scrtStakepoolGetLotteryInfo();
+      await this.scrtStakepoolGetTotalscrtRewards();
     },
 
-    async sefiStakepoolAccountViewEntryPoint() {
+    async scrtStakepoolAccountViewEntryPoint() {
       this.get_viewing_key_helper();
       this.syncer_function_for_vk();
     },
 
     //Sets Time and set Timer
-    async sefiStakepoolGetLotteryInfo() {
+    async scrtStakepoolGetLotteryInfo() {
       const msg = { lottery_info: {} };
       let res;
       try {
@@ -48,42 +47,49 @@ export const SefiStakepoolDefinition = {
       } catch (e) {
         console.log(e);
       }
-      this.start_time = res.lottery_info.start_height;
-      this.end_time = res.lottery_info.end_height;
+      this.start_time = res.lottery_info.start_time;
+      this.end_time = res.lottery_info.end_time;
 
-      await this.sefiStakepoolGetLotteryInfoHelper();
+      console.log(this.start_time, "Start time");
+      console.log(this.end_time, "end time");
+
+      await this.scrtStakepoolGetLotteryInfoHelper();
     },
 
-    async sefiStakepoolGetTotalSefiDeposits() {
+    async scrtStakepoolGetTotalscrtDeposits() {
       const msg = { total_deposits: {} };
       let res;
       try {
         res = await this.scrtClient.queryContract(this.contractAddress, msg);
+        console.log(res);
       } catch (err) {
         console.log(err);
       }
       this.total_deposits = res.total_deposits.deposits;
+      console.log("total deposits", this.total_deposits);
+
       // console.log(this.total_deposits);
     },
 
-    async sefiStakepoolGetPublicPastRewards() {
-      const msg = { past_all_results: {} };
+    async scrtStakepoolGetPublicPastRewards() {
+      const msg = { past_all_records: {} };
       let res;
       try {
         res = await this.scrtClient.queryContract(this.contractAddress, msg);
+        console.log(res);
       } catch (err) {
         console.log(err);
       }
       let temp_array = [];
 
-      temp_array = res.past_results.past_rewards;
+      temp_array = res.past_results.past_records;
       // console.log(temp_array);
-      this.past_rewards = temp_array;
+      this.past_records = temp_array;
 
       for (var i = 0; i < temp_array.length; i++) {
         // console.log("working");
 
-        this.past_rewards[i][0] = temp_array[i][0];
+        this.past_records[i][0] = temp_array[i][0];
         var date = new Date(temp_array[i][1] * 1000);
         var options = {
           month: "long", //to display the full name of the month
@@ -91,20 +97,20 @@ export const SefiStakepoolDefinition = {
         };
         var sDate = date.toLocaleDateString("en-US", options);
         temp_array[i][1] = sDate;
-        // this.past_rewards = sDate;
+        // this.past_records = sDate;
       }
 
-      this.past_rewards = temp_array;
+      this.past_records = temp_array;
 
-      console.log(this.past_rewards);
+      console.log(this.past_records);
       console.log(temp_array);
 
-      // console.log(this.past_rewards);
+      // console.log(this.past_records);
     },
 
-    async sefiStakepoolGetTotalSefiRewards() {
-      await this.sefiStakepoolGetTotalSefiDeposits();
-      // console.log("Total Sefi staked", typeof this.total_deposits);
+    async scrtStakepoolGetTotalscrtRewards() {
+      await this.scrtStakepoolGetTotalscrtDeposits();
+      // console.log("Total scrt staked", typeof this.total_deposits);
       if (this.total_deposits > 0) {
         this.total_rewards = ((this.total_deposits * 0.48) / 365) * 7;
         this.total_rewards = this.total_rewards.toString();
@@ -112,7 +118,7 @@ export const SefiStakepoolDefinition = {
       }
     },
 
-    async sefiStakepoolGetBalance() {
+    async scrtStakepoolGetBalance() {
       const wallet = useWallet();
       const address = wallet.address;
       this.wallet_address = address;
@@ -134,7 +140,7 @@ export const SefiStakepoolDefinition = {
       this.balance = res.balance.amount;
     },
 
-    async sefiStakepoolGetAvailableForWithdrawl() {
+    async scrtStakepoolGetAvailableForWithdrawl() {
       const wallet = useWallet();
       const address = wallet.address;
       this.wallet_address = address;
@@ -157,7 +163,7 @@ export const SefiStakepoolDefinition = {
       }
     },
 
-    async sefiStakepoolGetUserPastRecords() {
+    async scrtStakepoolGetUserPastRecords() {
       const wallet = useWallet();
       const address = wallet.address;
       this.wallet_address = address;
@@ -207,7 +213,7 @@ export const SefiStakepoolDefinition = {
     },
 
     //HELPER FUNCTIONS
-    async sefiStakepoolGetLotteryInfoHelper() {
+    async scrtStakepoolGetLotteryInfoHelper() {
       const now = new Date();
       now.toUTCString();
       now.toISOString();
@@ -219,7 +225,7 @@ export const SefiStakepoolDefinition = {
       }
     },
 
-    async sefiStakepoolSyncTimer() {
+    async scrtStakepoolSyncTimer() {
       this.current_time += 1;
       this.time_left -= 1;
       let temp_timer = this.time_left;
@@ -228,7 +234,7 @@ export const SefiStakepoolDefinition = {
       if (this.time_left < 0) {
         temp_timer = 0;
         if (this.time_left < -20) {
-          this.sefiStakepoolGetLotteryInfo();
+          this.scrtStakepoolGetLotteryInfo();
           this.time_left = 0;
         }
       }
@@ -253,34 +259,34 @@ export const SefiStakepoolDefinition = {
     },
 
     async syncer_function_for_vk() {
-      await this.sefiStakepoolGetBalance();
-      await this.sefiStakepoolGetUserPastRecords();
-      await this.sefiStakepoolGetAvailableForWithdrawl();
+      await this.scrtStakepoolGetBalance();
+      await this.scrtStakepoolGetUserPastRecords();
+      await this.scrtStakepoolGetAvailableForWithdrawl();
     },
 
     async syncer_function_for_deposit() {
-      await this.sefiStakepoolGetTotalSefiDeposits();
-      await this.sefiStakepoolGetBalance();
+      await this.scrtStakepoolGetTotalscrtDeposits();
+      await this.scrtStakepoolGetBalance();
     },
     async syncer_function_for_trigger_withdraw_and_redelegate() {
       console.log("called");
-      await this.sefiStakepoolGetTotalSefiDeposits();
-      await this.sefiStakepoolGetBalance();
-      await this.sefiStakepoolGetAvailableForWithdrawl();
+      await this.scrtStakepoolGetTotalscrtDeposits();
+      await this.scrtStakepoolGetBalance();
+      await this.scrtStakepoolGetAvailableForWithdrawl();
     },
     async syncer_function_for_withdraw() {
-      await this.sefiStakepoolGetAvailableForWithdrawl();
+      await this.scrtStakepoolGetAvailableForWithdrawl();
     },
   },
   messages: {
-    async sefiStakepoolCreateViewingKey() {
+    async scrtStakepoolCreateViewingKey() {
       this.get_viewing_key_helper();
 
       if (!this.vk) {
         try {
           const vks = useVKs();
           let vkey = await vks.createViewingKey(this.contractAddress);
-          // console.log("Inside set or get viewing #sefi_token_def");
+          // console.log("Inside set or get viewing #scrt_token_def");
           this.vk = vkey;
           console.log(this.vk);
         } catch (err) {
@@ -291,50 +297,47 @@ export const SefiStakepoolDefinition = {
       }
       this.syncer_function_for_vk();
     },
-    async sefiStakepoolDeposit(depositAmount) {
-      let final_deposit_amount_in_uSefi = (depositAmount * 1000000).toString();
+    async scrtStakepoolDeposit(depositAmount) {
+      let final_deposit_amount_in_uscrt = depositAmount.toString();
       const Handlemsg = { deposit: {} };
       let res;
-      // const fees = {
-      //   amount: [{ amount: "0", denom: "uscrt" }],
-      //   gas: "900000",
-      // };
+
       const msg = {
         send: {
           recipient: this.contractAddress,
-          amount: final_deposit_amount_in_uSefi,
-          msg: btoa(JSON.stringify(Handlemsg)),
+          amount: final_deposit_amount_in_uscrt,
+          msg: Handlemsg,
         },
       };
       try {
         res = await this.scrtClient.executeContract(
-          SefiTokenContractAddress,
           msg,
           undefined,
           undefined,
           fees
         );
-        await this.syncer_function_for_deposit();
-        return [
-          true,
-          final_deposit_amount_in_uSefi,
-          this.total_deposits,
-          this.balance,
-          "sucess",
-        ];
+        // await this.syncer_function_for_deposit();
+        // return [
+        //   true,
+        //   final_deposit_amount_in_uscrt,
+        //   this.total_deposits,
+        //   this.balance,
+        //   "sucess",
+        // ];
+        console.log(res);
       } catch (e) {
-        await this.syncer_function_for_deposit();
+        // await this.syncer_function_for_deposit();
 
         console.log(e);
         return [false, 0, 0, 0, e];
       }
     },
 
-    async sefiStakepoolWithdraw(amount) {
-      let final_withdraw_amount_in_uSefi = (amount * 1000000).toString();
+    async scrtStakepoolWithdraw(amount) {
+      let final_withdraw_amount_in_uscrt = (amount * 1000000).toString();
       const msg = { withdraw: {} };
-      if (final_withdraw_amount_in_uSefi > 0) {
-        const msg = { withdraw: { amount: final_withdraw_amount_in_uSefi } };
+      if (final_withdraw_amount_in_uscrt > 0) {
+        const msg = { withdraw: { amount: final_withdraw_amount_in_uscrt } };
         try {
           const res = await this.scrtClient.executeContract(
             this.contractAddress,
@@ -354,10 +357,10 @@ export const SefiStakepoolDefinition = {
       }
     },
 
-    async sefiStakepoolTriggerWithdraw(amount) {
-      let final_trigger_amount_in_uSefi = (amount * 1000000).toString();
+    async scrtStakepoolTriggerWithdraw(amount) {
+      let final_trigger_amount_in_uscrt = (amount * 1000000).toString();
       const msg = {
-        trigger_withdraw: { amount: final_trigger_amount_in_uSefi },
+        trigger_withdraw: { amount: final_trigger_amount_in_uscrt },
       };
       try {
         const res = await this.scrtClient.executeContract(
@@ -376,11 +379,11 @@ export const SefiStakepoolDefinition = {
         return [false, e];
       }
     },
-    async sefiStakepoolredelegate(amount) {
-      let final_deposit_amount_in_uSefi = (amount * 1000000).toString();
+    async scrtStakepoolredelegate(amount) {
+      let final_deposit_amount_in_uscrt = (amount * 1000000).toString();
       let msg = { redelegate: {} };
       if (amount > 0) {
-        msg = { redelegate: { amount: final_deposit_amount_in_uSefi } };
+        msg = { redelegate: { amount: final_deposit_amount_in_uscrt } };
       }
       try {
         const res = await this.scrtClient.executeContract(

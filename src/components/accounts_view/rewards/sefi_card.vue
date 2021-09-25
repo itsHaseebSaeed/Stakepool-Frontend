@@ -41,7 +41,10 @@
 </template>
 
 <script>
-import { useSefiContractStore, useSefiStakepoolStore } from "../contracts";
+import {
+  useSefiContractStore,
+  useSefiStakepoolStore,
+} from "../../../contracts";
 import { mapState, mapActions } from "pinia";
 import { coinConvert } from "@stakeordie/griptape.js";
 

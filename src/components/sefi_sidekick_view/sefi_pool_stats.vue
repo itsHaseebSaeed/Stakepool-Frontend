@@ -27,7 +27,7 @@
               <div class="">
                 <span class="d-flex align-items-center">
                   <img
-                    src="../images/sefi_logo.png"
+                    src="../../images/sefi_logo.png"
                     alt="Logo"
                     class="mini-logo-size"
                   />
@@ -47,7 +47,7 @@
           <div class="d-flex justify-content-end">
             <span class="d-inline d-flex align-items-center">
               <img
-                src="../images/sefi_logo.png"
+                src="../../images/sefi_logo.png"
                 alt="Logo"
                 class="mini-logo-size"
               />
@@ -86,7 +86,7 @@
               <div class="d-flex align-items-center">
                 <span class="d-flex align-items-center">
                   <img
-                    src="../images/sefi_logo.png"
+                    src="../../images/sefi_logo.png"
                     alt="Logo"
                     class="mini-logo-size"
                   />
@@ -118,7 +118,7 @@
 <script>
 import { mapState, mapActions } from "pinia";
 import { coinConvert } from "@stakeordie/griptape.js";
-import { useSefiContractStore, useSefiStakepoolStore } from "../contracts";
+import { useSefiContractStore, useSefiStakepoolStore } from "../../contracts";
 
 export default {
   computed: {

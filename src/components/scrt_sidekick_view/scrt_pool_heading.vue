@@ -5,7 +5,7 @@
       <nav aria-label="breadcrumb" class="p-0">
         <ol class="breadcrumb">
           <router-link class="breadcrumb-item txt-decoration " to=/Stakepool-Frontend/>POOL</router-link>
-          <span class="breadcrumb-item" >SEFI</span>
+          <span class="breadcrumb-item" >SCRT</span>
         </ol>
       </nav>
     </div>
@@ -14,14 +14,14 @@
 
       <div class="col-md-1 col-2 align-self-center">
         <img
-          src="../images/sefi_logo.png"
+          src="../../images/logo.png"
           alt="LOGO Image"
           class="img-fluid logo-size"
         />
       </div>
 
       <div class="col-5 text-white font-weight-bold">
-        <div class="fs-1">SEFI POOL</div>
+        <div class="fs-1">SCRT POOL</div>
       </div>
 
       <div class="col-md-3 col-1"></div>
@@ -33,7 +33,8 @@
                   type="button"
                   class="btn deposit_button"
                   data-bs-toggle="modal"
-                  data-bs-target="#sefiDepositModal">
+                  data-bs-target="#scrtDepositModal"
+                >
                   Deposit
                 </button>
               </router-link>

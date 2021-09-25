@@ -3,12 +3,12 @@ import {
   createSnip20Contract,
 } from "@stakeordie/griptape-vue.js";
 
-// import { ScrtStakepoolDefinition } from "./scrt_stakepool_def.js";
+import { ScrtStakepoolDefinition } from "./scrt_stakepool_def.js";
 import { SefiStakepoolDefinition } from "./sefi_stakepool_def.js";
 import { SefiTokenDefinition } from "./sefi_token_def.js";
 
 const ScrtStakepoolContractAddress =
-  "secret10a68eweaycm0smn0gj8qjsaut07c4ucrk3smw8";
+  "secret19zxf4d86fqhtp65r57nx8lewy406k4hgyhs2tq";
 
 const SefiStakepoolContractAddress =
   "secret1xj3v5q0q0p5khvark9hmcjrdxrjgh9zqsq7lhg";
@@ -16,11 +16,11 @@ const SefiStakepoolContractAddress =
 const SefiTokenContractAddress =
   "secret12q2c5s5we5zn9pq43l0rlsygtql6646my0sqfm";
 
-// export const useScrtStakepoolStore = createSnip20Contract(
-//   "ScrtStakepool",
-//   ScrtStakepoolContractAddress,
-//   ScrtStakepoolDefinition
-// );
+export const useScrtStakepoolStore = createSnip20Contract(
+  "ScrtStakepool",
+  ScrtStakepoolContractAddress,
+  ScrtStakepoolDefinition
+);
 
 export const useSefiStakepoolStore = createContract(
   "SefiStakepool",

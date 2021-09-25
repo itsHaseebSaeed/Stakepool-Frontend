@@ -132,7 +132,7 @@ export const SefiStakepoolDefinition = {
         msg
       );
       this.balance = res.balance.amount;
-      console.log("balance" + this.balance);
+      // console.log("balance" + this.balance);
     },
 
     async sefiStakepoolGetAvailableForWithdrawl() {
@@ -153,10 +153,10 @@ export const SefiStakepoolDefinition = {
         res = await this.scrtClient.queryContract(this.contractAddress, msg);
         this.available_tokens_for_withdrawl =
           res.available_tokens_for_withdrawl.amount;
-        console.log(
-          "Amount available for withdrawl: " +
-            this.available_tokens_for_withdrawl
-        );
+        // console.log(
+        //   "Amount available for withdrawl: " +
+        //     this.available_tokens_for_withdrawl
+        // );
       } catch (e) {
         console.log(e);
       }

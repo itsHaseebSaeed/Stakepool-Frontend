@@ -5,7 +5,7 @@
         class="col-lg-3 d-flex justify-content-lg-start justify-content-center"
       >
         <span class="d-inline ms-2 d-flex align-items-center">
-          <img src="../images/logo.png" alt="Logo" class="mini-logo-size" />
+          <img src="../../images/logo.png" alt="Logo" class="mini-logo-size" />
         </span>
         <span class="pool_stats_scrt_to_dollar ms-2 text-white">SCRT</span>
       </div>

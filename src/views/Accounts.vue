@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import accountAccountCard from "../components/account_account.vue";
+import accountAccountCard from "../components/accounts_view/account/main.vue";
 
-import accountRewardsCard from "../components/account_rewards.vue";
+import accountRewardsCard from "../components/accounts_view/rewards/main.vue";
 
 export default {
   components: {

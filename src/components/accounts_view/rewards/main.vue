@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import Title from "../components/account_rewards_title.vue";
-import ScrtCard from "../components/account_rewards_scrt_card.vue";
-import SefiCard from "../components/account_rewards_sefi_card.vue";
+import Title from "./title.vue";
+import ScrtCard from "./scrt_card.vue";
+import SefiCard from "./sefi_card.vue";
 
 export default {
   components: {

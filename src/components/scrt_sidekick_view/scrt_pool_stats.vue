@@ -16,7 +16,7 @@
             <div class="col-sm-4">
               <div class="d-flex justify-content-end">
                 <span class="d-flex align-items-center">
-                  <img src="../images/logo.png" alt="Logo" height="20px" />
+                  <img src="../../images/logo.png" alt="Logo" height="20px" />
                 </span>
                 <span class="text-white">SCRT</span>
               </div>
@@ -30,7 +30,7 @@
         <div class="col-8">
           <div class="d-flex justify-content-end">
             <span class="d-inline d-flex align-items-center">
-              <img src="../images/logo.png" alt="Logo" height="20px" />
+              <img src="../../images/logo.png" alt="Logo" height="20px" />
             </span>
             <span
               class="
@@ -56,7 +56,7 @@
           <div class="col-12 d-inline d-flex justify-content-end">
             <span class="text-white me-2 d-inline">33000</span>
             <span class="d-flex align-items-center">
-              <img src="../images/logo.png" alt="Logo" height="20px" />
+              <img src="../../images/logo.png" alt="Logo" height="20px" />
             </span>
           </div>
         </div>

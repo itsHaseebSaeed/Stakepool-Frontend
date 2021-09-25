@@ -68,7 +68,7 @@
             <div class="row p-0">
               <span class="col-6 align-self-center d-flex justify-content-end">
                 <img
-                  src="../images/sefi_logo.png"
+                  src="../../../images/sefi_logo.png"
                   alt="LOGO Image"
                   class="img-fluid logo-size"
                 />
@@ -136,7 +136,7 @@
                 "
               >
                 <img
-                  src="../images/gift.png"
+                  src="../../../images/gift.png"
                   alt="LOGO Image"
                   class="img-fluid logo-size"
                 />
@@ -195,8 +195,11 @@
 import { mapState, mapActions } from "pinia";
 import { useWalletStore } from "@stakeordie/griptape-vue.js";
 import { coinConvert } from "@stakeordie/griptape.js";
-import { useSefiStakepoolStore, useSefiContractStore } from "../contracts";
-import gift from "../images/gift.png";
+import {
+  useSefiStakepoolStore,
+  useSefiContractStore,
+} from "../../../contracts";
+import gift from "../../../images/gift.png";
 export default {
   data() {
     return {

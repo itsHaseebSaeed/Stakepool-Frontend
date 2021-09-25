@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import {useSefiContractStore } from "../../src/contracts";
+import {useSefiContractStore } from "../../contracts";
 import { useViewingKeyStore as vk } from '@stakeordie/griptape-vue.js'
 import { mapState } from 'pinia'
 export default {

@@ -61,7 +61,7 @@
                 </span>
                 <span class="d-flex align-items-center">
                   <img
-                    src="../images/sefi_logo.png"
+                    src="../../images/sefi_logo.png"
                     alt="LOGO Image"
                     class="img-fluid mini-logo-size"
                   />
@@ -238,10 +238,7 @@
 <script>
 import { mapState, mapActions } from "pinia";
 import { coinConvert } from "@stakeordie/griptape.js";
-import {
-  useSefiStakepoolStore,
-  useSefiContractStore,
-} from "../../src/contracts";
+import { useSefiStakepoolStore, useSefiContractStore } from "../../contracts";
 import BigNumber from "bignumber.js";
 export default {
   data() {

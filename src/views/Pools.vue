@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import TotalDepositsCard from "../components/pool_view_total_deposits.vue";
-import TitleCard from "../components/pool_view_title_card.vue";
-import ScrtCard from "../components/pool_view_scrt_card.vue";
-import SefiCard from "../components/pool_view_sefi_card.vue";
-import DepositModal from "../modals/scrt_deposit_modal.vue";
+import TotalDepositsCard from "../components/pool_view/total_deposits.vue";
+import TitleCard from "../components/pool_view/title_card.vue";
+import ScrtCard from "../components/pool_view/scrt_card.vue";
+import SefiCard from "../components/pool_view/sefi_card.vue";
+import DepositModal from "../modals/scrt_modals/scrt_deposit_modal.vue";
 
 export default {
   components: { TotalDepositsCard, TitleCard, ScrtCard, SefiCard,DepositModal },

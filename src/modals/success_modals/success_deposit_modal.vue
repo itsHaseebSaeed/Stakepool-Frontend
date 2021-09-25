@@ -42,7 +42,7 @@
                 }}</span>
                 <span class="d-flex justify-content-center align-items-center">
                   <img
-                    src="../images/sefi_logo.png"
+                    src="../../images/sefi_logo.png"
                     alt="LOGO Image"
                     class="img-fluid logo-size-successModal"
                   />

@@ -76,6 +76,7 @@
 import "/src/assets/css/style.css";
 import { useSefiStakepoolStore } from "../src/contracts";
 import { useSefiContractStore } from "../src/contracts";
+import { useScrtStakepoolStore } from "../src/contracts";
 
 import { mapState, mapActions } from "pinia";
 import { defineAsyncComponent } from "vue";
@@ -96,41 +97,45 @@ export default {
     };
   },
   components: {
-    Heading: defineAsyncComponent(() => import("./components/heading.vue")),
-    PageContent: defineAsyncComponent(() =>
-      import("./components/page_content.vue")
+    Heading: defineAsyncComponent(() =>
+      import("./components/main_view/heading.vue")
     ),
-    Footing: defineAsyncComponent(() => import("./components/footing.vue")),
+    PageContent: defineAsyncComponent(() =>
+      import("./components/main_view/page_content.vue")
+    ),
+    Footing: defineAsyncComponent(() =>
+      import("./components/main_view/footing.vue")
+    ),
     ScrtDepositModal: defineAsyncComponent(() =>
-      import("./modals/scrt_deposit_modal.vue")
+      import("./modals/scrt_modals/scrt_deposit_modal.vue")
     ),
     SefiDepositModal: defineAsyncComponent(() =>
-      import("./modals/sefi_deposit_modal.vue")
+      import("./modals/sefi_modals/sefi_deposit_modal.vue")
     ),
 
     SefiWithdrawModal: defineAsyncComponent(() =>
-      import("./modals/sefi_withdraw_modal.vue")
+      import("./modals/sefi_modals/sefi_withdraw_modal.vue")
     ),
     ScrtReduceStakeModal: defineAsyncComponent(() =>
-      import("./modals/scrt_reducestake_modal.vue")
+      import("./modals/scrt_modals/scrt_reducestake_modal.vue")
     ),
     ScrtWithdrawModal: defineAsyncComponent(() =>
-      import("./modals/scrt_withdraw_modal.vue")
+      import("./modals/scrt_modals/scrt_withdraw_modal.vue")
     ),
     SefiReduceStakeModal: defineAsyncComponent(() =>
-      import("./modals/sefi_reducestake_modal.vue")
+      import("./modals/sefi_modals/sefi_reducestake_modal.vue")
     ),
     FailedModal: defineAsyncComponent(() =>
       import("./modals/failture_modal.vue")
     ),
     DepositSuccessModal: defineAsyncComponent(() =>
-      import("./modals/success_deposit_modal.vue")
+      import("./modals/success_modals/success_deposit_modal.vue")
     ),
     ReduceStakedSuccessModal: defineAsyncComponent(() =>
-      import("./modals/success_reduce_stakes_modal.vue")
+      import("./modals/success_modals/success_reduce_stakes_modal.vue")
     ),
     WithdrawSuccessModal: defineAsyncComponent(() =>
-      import("./modals/success_withdraw_modal.vue")
+      import("./modals/success_modals/success_withdraw_modal.vue")
     ),
   },
   created() {
@@ -143,9 +148,13 @@ export default {
     );
     this.timer = window.setInterval(this.sefiStakepoolSyncTimer, 1000);
     this.timer2 = window.setTimeout(this.getSefiContractBalance, 1000);
+
+    //testing only
+    this.scrtStakepoolGetPublicPastRewards();
   },
 
   methods: {
+    ...mapActions(useScrtStakepoolStore, ["scrtStakepoolGetPublicPastRewards"]),
     ...mapActions(useSefiStakepoolStore, [
       "sefiStakepoolSyncTimer",
       "sefiStakepoolPoolViewEntryPoint",

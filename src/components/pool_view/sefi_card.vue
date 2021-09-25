@@ -8,7 +8,7 @@
           class="d-inline ms-2 d-flex align-items-center justify-content-start"
         >
           <img
-            src="../images/sefi_logo.png"
+            src="../../images/sefi_logo.png"
             alt="Logo"
             class="mini-logo-size"
           />
@@ -144,7 +144,7 @@
 </template>
 
 <script>
-import { useSefiContractStore, useSefiStakepoolStore } from "../contracts";
+import { useSefiContractStore, useSefiStakepoolStore } from "../../contracts";
 import { mapState, mapActions } from "pinia";
 import { coinConvert } from "@stakeordie/griptape.js";
 

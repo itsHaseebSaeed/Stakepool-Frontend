@@ -8,10 +8,10 @@
 </template>
 
 <script>
-import ScrtPoolHeading from "../components/scrt_pool_heading.vue";
-import ScrtPoolPrize from "../components/scrt_pool_prize_card.vue";
-import ScrtPoolStats from "../components/scrt_pool_stats.vue";
-import ScrtPoolPastPrizes from "../components/scrt_past_prizes.vue";
+import ScrtPoolHeading from "../components/scrt_sidekick_view/scrt_pool_heading.vue";
+import ScrtPoolPrize from "../components/scrt_sidekick_view/scrt_pool_prize_card.vue";
+import ScrtPoolStats from "../components/scrt_sidekick_view/scrt_pool_stats.vue";
+import ScrtPoolPastPrizes from "../components/scrt_sidekick_view/scrt_past_prizes.vue";
 
 export default {
   components: {

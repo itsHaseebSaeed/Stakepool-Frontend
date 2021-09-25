@@ -29,7 +29,7 @@
                 <div class="d-flex align-items-center">
                   <span class="d-flex align-items-center">
                     <img
-                      src="../images/sefi_logo.png"
+                      src="../../images/sefi_logo.png"
                       alt="Logo"
                       class="mini-logo-size"
                     />
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { useSefiContractStore, useSefiStakepoolStore } from "../contracts";
+import { useSefiContractStore, useSefiStakepoolStore } from "../../contracts";
 import { mapState, mapActions } from "pinia";
 import { coinConvert } from "@stakeordie/griptape.js";
 
