@@ -26,7 +26,7 @@
           >
             ${{
               coinConvert(
-                coinConvert(total_rewards / 1000000, 0, "human", 1) *
+                coinConvert(sefi_total_rewards / 1000000, 0, "human", 1) *
                   sefi_token_current_price,
                 0,
                 "human",
@@ -193,7 +193,7 @@ export default {
       "hours2",
       "mins2",
       "secs2",
-      "total_rewards",
+      "sefi_total_rewards",
     ]),
     ...mapState(useSefiContractStore, ["sefi_token_current_price"]),
   },

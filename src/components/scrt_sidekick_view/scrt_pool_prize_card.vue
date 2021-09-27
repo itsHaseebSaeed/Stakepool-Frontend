@@ -24,7 +24,15 @@
               justify-content-lg-start justify-content-center
             "
           >
-            $46,482
+            ${{
+              coinConvert(
+                coinConvert(scrt_total_rewards / 1000000, 0, "human", 1) *
+                  scrt_token_current_price,
+                0,
+                "human",
+                1
+              )
+            }}
           </div>
         </div>
 
@@ -51,7 +59,7 @@
                     d-flex
                     justify-content-center
                   "
-                  >1</span
+                  >{{ days1 }}</span
                 >
                 <span
                   class="
@@ -60,7 +68,7 @@
                     d-flex
                     justify-content-center
                   "
-                  >2</span
+                  >{{ days2 }}</span
                 >
               </div>
               <div class="row">
@@ -82,7 +90,7 @@
                     d-flex
                     justify-content-center
                   "
-                  >1</span
+                  >{{ hours1 }}</span
                 >
                 <span
                   class="
@@ -91,7 +99,7 @@
                     d-flex
                     justify-content-center
                   "
-                  >4</span
+                  >{{ hours2 }}</span
                 >
               </div>
               <div class="row">
@@ -112,7 +120,7 @@
                     d-flex
                     justify-content-center
                   "
-                  >1</span
+                  >{{ mins1 }}</span
                 >
                 <span
                   class="
@@ -121,7 +129,7 @@
                     d-flex
                     justify-content-center
                   "
-                  >2</span
+                  >{{ mins2 }}</span
                 >
               </div>
               <div class="row">
@@ -142,7 +150,7 @@
                     d-flex
                     justify-content-center
                   "
-                  >1</span
+                  >{{ secs1 }}</span
                 >
                 <span
                   class="
@@ -151,7 +159,7 @@
                     d-flex
                     justify-content-center
                   "
-                  >2</span
+                  >{{ secs2 }}</span
                 >
               </div>
               <div class="row">
@@ -166,3 +174,31 @@
     </div>
   </div>
 </template>
+
+<script>
+import { useScrtStakepoolStore } from "../../contracts";
+import { mapState, mapActions } from "pinia";
+import { coinConvert } from "@stakeordie/griptape.js";
+
+export default {
+  name: "pool_view_sefi_card",
+
+  computed: {
+    ...mapState(useScrtStakepoolStore, [
+      "days1",
+      "hours1",
+      "mins1",
+      "secs1",
+      "days2",
+      "hours2",
+      "mins2",
+      "secs2",
+      "scrt_total_rewards",
+      "scrt_token_current_price",
+    ]),
+  },
+  methods: {
+    coinConvert,
+  },
+};
+</script>

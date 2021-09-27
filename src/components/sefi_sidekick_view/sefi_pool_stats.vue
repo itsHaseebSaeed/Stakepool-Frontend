@@ -12,7 +12,7 @@
                 <span class="pool_stats_scrt_to_dollar pool_past_prizes">
                   (${{
                     coinConvert(
-                      coinConvert(total_deposits, 6, "human", 1) *
+                      coinConvert(sefi_total_deposits, 6, "human", 1) *
                         sefi_token_current_price,
                       0,
                       "human",
@@ -22,7 +22,9 @@
                 </span>
               </div>
               <div class="me-3">
-                <span>{{ coinConvert(total_deposits, 6, "human", 1) }}</span>
+                <span>{{
+                  coinConvert(sefi_total_deposits, 6, "human", 1)
+                }}</span>
               </div>
               <div class="">
                 <span class="d-flex align-items-center">
@@ -79,7 +81,7 @@
             <div class="d-flex justify-content-end align-items-center">
               <div class="me-3">
                 <span>{{
-                  coinConvert(total_rewards / 1000000, 0, "humans", 1)
+                  coinConvert(sefi_total_rewards / 1000000, 0, "humans", 1)
                 }}</span>
               </div>
 
@@ -123,7 +125,10 @@ import { useSefiContractStore, useSefiStakepoolStore } from "../../contracts";
 export default {
   computed: {
     ...mapState(useSefiContractStore, ["sefi_token_current_price"]),
-    ...mapState(useSefiStakepoolStore, ["total_deposits", "total_rewards"]),
+    ...mapState(useSefiStakepoolStore, [
+      "sefi_total_deposits",
+      "sefi_total_rewards",
+    ]),
   },
   methods: {
     coinConvert,

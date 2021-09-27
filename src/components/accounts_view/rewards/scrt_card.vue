@@ -10,7 +10,7 @@
           <span class="text-white"> 8800 </span>
           <span class="d-inline ms-2 d-flex align-items-center">
             <img
-              src="../../../images/sefi_logo.png"
+              src="../../../images/scrt_logo.png"
               alt="Logo"
               class="mini-logo-size"
             />
@@ -24,7 +24,7 @@
           <span class="text-white"> 8800 </span>
           <span class="d-inline ms-2 d-flex align-items-center">
             <img
-              src="../../../images/sefi_logo.png"
+              src="../../../images/scrt_logo.png"
               alt="Logo"
               class="mini-logo-size"
             />
@@ -38,7 +38,7 @@
           <span class="text-white"> 8800 </span>
           <span class="d-inline ms-2 d-flex align-items-center">
             <img
-              src="../../../images/sefi_logo.png"
+              src="../../../images/scrt_logo.png"
               alt="Logo"
               class="mini-logo-size"
             />

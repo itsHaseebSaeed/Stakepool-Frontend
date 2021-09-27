@@ -8,7 +8,7 @@ import { SefiStakepoolDefinition } from "./sefi_stakepool_def.js";
 import { SefiTokenDefinition } from "./sefi_token_def.js";
 
 const ScrtStakepoolContractAddress =
-  "secret19zxf4d86fqhtp65r57nx8lewy406k4hgyhs2tq";
+  "secret15wp0p3mlmdr8hy7elc4zuqrm5qmynwwlcqmeax";
 
 const SefiStakepoolContractAddress =
   "secret1xj3v5q0q0p5khvark9hmcjrdxrjgh9zqsq7lhg";
@@ -16,7 +16,7 @@ const SefiStakepoolContractAddress =
 const SefiTokenContractAddress =
   "secret12q2c5s5we5zn9pq43l0rlsygtql6646my0sqfm";
 
-export const useScrtStakepoolStore = createSnip20Contract(
+export const useScrtStakepoolStore = createContract(
   "ScrtStakepool",
   ScrtStakepoolContractAddress,
   ScrtStakepoolDefinition

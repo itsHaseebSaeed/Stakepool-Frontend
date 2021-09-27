@@ -28,7 +28,7 @@
             </span>
             <span class="d-inline ms-2 d-flex align-items-center">
               <img
-                src="../images/sefi_logo.png"
+                src="../../../images/sefi_logo.png "
                 alt="Logo"
                 class="mini-logo-size"
               />

@@ -14,7 +14,7 @@
 
       <div class="col-md-1 col-2 align-self-center">
         <img
-          src="../../images/logo.png"
+          src="../../images/scrt_logo.png"
           alt="LOGO Image"
           class="img-fluid logo-size"
         />

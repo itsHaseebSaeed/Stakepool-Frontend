@@ -54,44 +54,30 @@
                   align-items-center
                   white
                 "
-                v-if="sefi_token_balance"
               >
                 <span class="pe-2">
-                  {{ coinConvert(sefi_token_balance, 6, "human", 1) }}
+                  {{ coinConvert(balance, 6, "human", 2) }}
                 </span>
                 <span class="d-flex align-items-center">
                   <img
-                    src="../images/logo.png"
+                    src="../../images/scrt_logo.png"
                     alt="LOGO Image"
                     class="img-fluid mini-logo-size"
                   />
                 </span>
                 SCRT
                 <span class="ps-1 pool_past_prizes">
-                  (${{
-                    coinConvert(sefi_token_balance_in_usd, 6, "human", 1)
+                  ($
+                  {{
+                    coinConvert(
+                      coinConvert(balance / 1000000, 0, "human", 0) *
+                        scrt_token_current_price,
+                      0,
+                      "human",
+                      2
+                    )
                   }})</span
                 >
-              </div>
-              <div
-                class="
-                  col-8
-                  d-flex
-                  justify-content-end
-                  align-items-center
-                  white
-                "
-                v-else
-              >
-                <span class="deposit-modal-amount">
-                  <span class="col-2" style="font-size: 20px">&#128269;</span>
-                  <span
-                    @click="createOrGetViewingKey()"
-                    class="createViewingKey"
-                  >
-                    Create or Get Viewing Key
-                  </span>
-                </span>
               </div>
             </div>
 
@@ -126,7 +112,6 @@
                     lazy
                     id="input_field"
                     v-model="depositamount"
-                    min="0"
                     @click="removeWarning()"
                   />
                 </span>
@@ -233,6 +218,12 @@
   </div>
 </template>
 <script>
+import { mapState, mapActions } from "pinia";
+import { useWalletStore } from "@stakeordie/griptape-vue.js";
+import { coinConvert } from "@stakeordie/griptape.js";
+import { useScrtStakepoolStore } from "../../contracts";
+import BigNumber from "bignumber.js";
+
 export default {
   data() {
     return {
@@ -242,9 +233,84 @@ export default {
 
       on_going_transaction: undefined,
       successful: undefined,
-      total_deposits: undefined,
+      scrt_total_deposits: undefined,
       staked_total: undefined,
     };
+  },
+  computed: {
+    ...mapState(useWalletStore, ["balance"]),
+    ...mapState(useScrtStakepoolStore, ["scrt_token_current_price"]),
+  },
+  methods: {
+    ...mapActions(useScrtStakepoolStore, ["scrtStakepoolDeposit"]),
+    coinConvert,
+    async deposit_check(depositamount) {
+      let bg_depositamount = new BigNumber(depositamount);
+      bg_depositamount = bg_depositamount
+        .multipliedBy(1000000)
+        .decimalPlaces(0);
+
+      let bg_balance = new BigNumber(this.balance);
+
+      if (bg_depositamount.isGreaterThan(bg_balance)) {
+        console.log(coinConvert(this.sefi_token_balance, 6, "human", 6));
+        console.log(depositamount);
+
+        this.overflow_warning = true;
+      } else if (bg_depositamount.isLessThan(1) || bg_depositamount.isNaN()) {
+        this.underflow_warning = true;
+      } else {
+        this.on_going_transaction = true;
+        this.overflow_warning = false;
+        this.underflow_warning = false;
+        let temp_array = await this.scrtStakepoolDeposit(
+          bg_depositamount.toNumber()
+        );
+        this.successful = temp_array[0];
+        depositamount = temp_array[1];
+        this.scrt_total_deposits = temp_array[2];
+        this.staked_total = temp_array[3];
+        if (this.successful) {
+          this.on_going_transaction = false;
+          this.successful = false;
+          this.$refs.closeBtn.click();
+          this.clearFields();
+          console.log((this.staked_total / this.scrt_total_deposits) * 100);
+          this.$emit("scrtsucessfulDeposit", {
+            current_deposits: bg_depositamount.toNumber(),
+            denom: "SCRT",
+            pool_share: (this.staked_total / this.scrt_total_deposits) * 100,
+            scrt_total_deposits: this.staked_total,
+          });
+        } else {
+          let res = setTimeout(this.getSefiContractBalance, 4000);
+          let res2 = setTimeout(this.syncer_function_for_deposit, 4000);
+          this.clearFields();
+          this.on_going_transaction = false;
+          this.$refs.closeBtn.click();
+          this.$emit("scrtfailedDeposit", {
+            error_message: temp_array[4],
+          });
+        }
+      }
+    },
+    async clearFields() {
+      this.depositamount = "";
+      this.overflow_warning = false;
+      this.underflow_warning = false;
+    },
+    async removeWarning() {
+      this.overflow_warning = false;
+      this.underflow_warning = false;
+    },
+    async Percentage(percentage) {
+      this.depositamount = coinConvert(
+        coinConvert(this.balance, 6, "human", 6) * percentage,
+        0,
+        "human",
+        6
+      );
+    },
   },
 };
 </script>

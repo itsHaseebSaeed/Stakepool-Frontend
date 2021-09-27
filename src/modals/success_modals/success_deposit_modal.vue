@@ -42,8 +42,8 @@
                 }}</span>
                 <span class="d-flex justify-content-center align-items-center">
                   <img
-                    src="../../images/sefi_logo.png"
-                    alt="LOGO Image"
+                    :src="ImageUrl()"
+                    alt="denom"
                     class="img-fluid logo-size-successModal"
                   />
                 </span>
@@ -63,7 +63,7 @@
                     success_modal-local-font-size
                     successfully_deposited_amount-bg
                   "
-                  >{{ coinConvert(pool_share, 6, "human", 2) }}%</span
+                  >{{ coinConvert(pool_share, 0, "human", 2) }}%</span
                 >
               </div>
             </div>
@@ -85,14 +85,26 @@
 </template>
 <script>
 import { coinConvert } from "@stakeordie/griptape.js";
-
 export default {
   data() {
     return {};
   },
+  computed: {},
   props: ["current_deposits", "pool_share", "total_deposits", "denom"],
   methods: {
     coinConvert,
+    async LowerCase(denom) {
+      console.log(typeof denom);
+      return denom.toLowerCase();
+    },
+    ImageUrl() {
+      if (!this.denom) {
+        return new URL("../../images/scrt_logo.png", import.meta.url); // the module request
+      }
+
+      const fileName = this.denom.toLowerCase();
+      return new URL("../../images/" + fileName + "_logo.png", import.meta.url); // the module request
+    },
   },
 };
 </script>

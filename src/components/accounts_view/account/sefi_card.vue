@@ -108,7 +108,12 @@
               "
             >
               {{
-                coinConvert((balance / total_deposits) * 100, 0, "human", 2)
+                coinConvert(
+                  (balance / sefi_total_deposits) * 100,
+                  0,
+                  "human",
+                  2
+                )
               }}%
             </div>
             <div
@@ -212,7 +217,7 @@ export default {
   computed: {
     ...mapState(useSefiStakepoolStore, [
       "balance",
-      "total_deposits",
+      "sefi_total_deposits",
       "days1",
       "hours1",
       "mins1",

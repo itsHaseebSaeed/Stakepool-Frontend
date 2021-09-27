@@ -12,8 +12,8 @@ export const SefiStakepoolDefinition = {
     current_time: undefined,
     balance: 0,
     available_tokens_for_withdrawl: 0,
-    total_rewards: 0,
-    total_deposits: 0,
+    sefi_total_rewards: 0,
+    sefi_total_deposits: 0,
     vk: undefined,
     wallet_address: undefined,
     past_rewards: undefined,
@@ -62,8 +62,8 @@ export const SefiStakepoolDefinition = {
       } catch (err) {
         console.log(err);
       }
-      this.total_deposits = res.total_deposits.deposits;
-      // console.log(this.total_deposits);
+      this.sefi_total_deposits = res.total_deposits.deposits;
+      // console.log(this.sefi_total_deposits);
     },
 
     async sefiStakepoolGetPublicPastRewards() {
@@ -96,19 +96,16 @@ export const SefiStakepoolDefinition = {
 
       this.past_rewards = temp_array;
 
-      console.log(this.past_rewards);
-      console.log(temp_array);
-
       // console.log(this.past_rewards);
     },
 
     async sefiStakepoolGetTotalSefiRewards() {
       await this.sefiStakepoolGetTotalSefiDeposits();
-      // console.log("Total Sefi staked", typeof this.total_deposits);
-      if (this.total_deposits > 0) {
-        this.total_rewards = ((this.total_deposits * 0.48) / 365) * 7;
-        this.total_rewards = this.total_rewards.toString();
-        // console.log("TOTAL rewards", typeof this.total_rewards);
+      // console.log("Total Sefi staked", typeof this.sefi_total_deposits);
+      if (this.sefi_total_deposits > 0) {
+        this.sefi_total_rewards = ((this.sefi_total_deposits * 0.48) / 365) * 7;
+        this.sefi_total_rewards = this.sefi_total_rewards.toString();
+        // console.log("TOTAL rewards", typeof this.sefi_total_rewards);
       }
     },
 
@@ -327,7 +324,7 @@ export const SefiStakepoolDefinition = {
         return [
           true,
           final_deposit_amount_in_uSefi,
-          this.total_deposits,
+          this.sefi_total_deposits,
           this.balance,
           "success",
         ];

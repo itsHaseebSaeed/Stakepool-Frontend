@@ -4,7 +4,10 @@
     <PageContent class="overflow-auto" />
     <Footing />
 
-    <ScrtDepositModal />
+    <ScrtDepositModal
+      @scrtsucessfulDeposit="depositSuccessModal"
+      @scrtfailedDeposit="failureModal"
+    />
     <SefiDepositModal
       @sucessfulDeposit="depositSuccessModal"
       @failedDeposit="failureModal"
@@ -28,12 +31,19 @@
       :balance="balance"
     />
 
-    <ScrtWithdrawModal />
+    <ScrtWithdrawModal
+      @failedWithdraw="failureModal"
+      @sucessfulWithdraw="withdrawSuccessModal"
+    />
+
     <SefiWithdrawModal
       @failedWithdraw="failureModal"
       @sucessfulWithdraw="withdrawSuccessModal"
     />
-    <ScrtReduceStakeModal />
+    <ScrtReduceStakeModal
+      @sucessfulReduceStakes="reduceStakesSuccessModal"
+      @failedReduceStake="failureModal"
+    />
     <SefiReduceStakeModal
       @sucessfulReduceStakes="reduceStakesSuccessModal"
       @failedReduceStake="failureModal"
@@ -140,21 +150,31 @@ export default {
   },
   created() {
     this.sefiStakepoolPoolViewEntryPoint();
+    this.scrtStakepoolPoolViewEntryPoint();
   },
   mounted() {
     this.timer0 = window.setTimeout(
       this.sefiStakepoolAccountViewEntryPoint,
       1000
     );
+    this.timer1 = window.setTimeout(this.scrtStakepoolPoolViewEntryPoint, 1000);
     this.timer = window.setInterval(this.sefiStakepoolSyncTimer, 1000);
+    this.timer3 = window.setInterval(this.scrtStakepoolSyncTimer, 1000);
+
     this.timer2 = window.setTimeout(this.getSefiContractBalance, 1000);
 
     //testing only
     this.scrtStakepoolGetPublicPastRewards();
+    this.scrtStakepoolGetScrtCurrentPrice();
   },
 
   methods: {
-    ...mapActions(useScrtStakepoolStore, ["scrtStakepoolGetPublicPastRewards"]),
+    ...mapActions(useScrtStakepoolStore, [
+      "scrtStakepoolSyncTimer",
+      "scrtStakepoolGetPublicPastRewards",
+      "scrtStakepoolGetScrtCurrentPrice",
+      "scrtStakepoolPoolViewEntryPoint",
+    ]),
     ...mapActions(useSefiStakepoolStore, [
       "sefiStakepoolSyncTimer",
       "sefiStakepoolPoolViewEntryPoint",

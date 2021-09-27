@@ -2,17 +2,19 @@ import axios from "axios";
 import { useViewingKeyStore as useVKs } from "@stakeordie/griptape-vue.js";
 import { useWalletStore as useWallet } from "@stakeordie/griptape-vue.js";
 const fees = {
-  gas: "810000",
+  gas: "410000",
 };
 export const ScrtStakepoolDefinition = {
   state: {
     start_time: undefined,
     end_time: undefined,
     current_time: undefined,
-    balance: 0,
+    user_deposits: 0,
     available_tokens_for_withdrawl: 0,
-    total_rewards: 0,
-    total_deposits: 0,
+    scrt_total_rewards: 0,
+    scrt_total_deposits: 0,
+    scrt_token_current_price: 0,
+    scrt_token_balance_in_usd: 0,
     vk: undefined,
     wallet_address: undefined,
     past_records: undefined,
@@ -30,7 +32,8 @@ export const ScrtStakepoolDefinition = {
   queries: {
     async scrtStakepoolPoolViewEntryPoint() {
       await this.scrtStakepoolGetLotteryInfo();
-      await this.scrtStakepoolGetTotalscrtRewards();
+      await this.scrtStakepoolGetTotalRewards();
+      await this.scrtStakepoolGetAvailableForWithdrawl();
     },
 
     async scrtStakepoolAccountViewEntryPoint() {
@@ -50,10 +53,22 @@ export const ScrtStakepoolDefinition = {
       this.start_time = res.lottery_info.start_time;
       this.end_time = res.lottery_info.end_time;
 
-      console.log(this.start_time, "Start time");
-      console.log(this.end_time, "end time");
+      // console.log(this.start_time, "Start time");
+      // console.log(this.end_time, "end time");
 
       await this.scrtStakepoolGetLotteryInfoHelper();
+    },
+
+    async scrtStakepoolGetScrtCurrentPrice() {
+      await axios
+        .get(
+          "https://api.coingecko.com/api/v3/simple/price?ids=secret&vs_currencies=usd"
+        )
+        .then(
+          (response) =>
+            (this.scrt_token_current_price = response.data["secret"].usd)
+        );
+      // console.log(this.scrt_token_current_price);
     },
 
     async scrtStakepoolGetTotalscrtDeposits() {
@@ -61,12 +76,12 @@ export const ScrtStakepoolDefinition = {
       let res;
       try {
         res = await this.scrtClient.queryContract(this.contractAddress, msg);
-        console.log(res);
+        // console.log(res);
       } catch (err) {
         console.log(err);
       }
-      this.total_deposits = res.total_deposits.deposits;
-      console.log("total deposits", this.total_deposits);
+      this.scrt_total_deposits = res.total_deposits.deposits;
+      // console.log("total deposits", this.scrt_total_deposits);
 
       // console.log(this.total_deposits);
     },
@@ -76,7 +91,7 @@ export const ScrtStakepoolDefinition = {
       let res;
       try {
         res = await this.scrtClient.queryContract(this.contractAddress, msg);
-        console.log(res);
+        // console.log(res);
       } catch (err) {
         console.log(err);
       }
@@ -108,17 +123,24 @@ export const ScrtStakepoolDefinition = {
       // console.log(this.past_records);
     },
 
-    async scrtStakepoolGetTotalscrtRewards() {
+    async scrtStakepoolGetTotalRewards() {
       await this.scrtStakepoolGetTotalscrtDeposits();
-      // console.log("Total scrt staked", typeof this.total_deposits);
-      if (this.total_deposits > 0) {
-        this.total_rewards = ((this.total_deposits * 0.48) / 365) * 7;
-        this.total_rewards = this.total_rewards.toString();
-        // console.log("TOTAL rewards", typeof this.total_rewards);
+      if (this.scrt_total_deposits > 0) {
+        this.scrt_total_rewards = ((this.scrt_total_deposits * 0.48) / 365) * 7;
+        this.scrt_total_rewards = this.scrt_total_rewards.toString();
       }
     },
-
-    async scrtStakepoolGetBalance() {
+    async scrtStakepoolGetCurrentTime() {
+      await axios
+        .get("https://api.stakeordie.com/blocks/latest")
+        .then(
+          (response) =>
+            (this.current_time = parseInt(
+              new Date(response.data.block.header.time).valueOf() / 1000
+            ))
+        );
+    },
+    async scrtStakepoolGetuser_deposits() {
       const wallet = useWallet();
       const address = wallet.address;
       this.wallet_address = address;
@@ -133,14 +155,19 @@ export const ScrtStakepoolDefinition = {
           key: this.vk,
         },
       };
-      const res = await this.scrtClient.queryContract(
-        this.contractAddress,
-        msg
-      );
-      this.balance = res.balance.amount;
+      try {
+        const res = await this.scrtClient.queryContract(
+          this.contractAddress,
+          msg
+        );
+        this.user_deposits = res.balance.amount;
+      } catch (err) {
+        console.error(err);
+      }
     },
 
     async scrtStakepoolGetAvailableForWithdrawl() {
+      await this.scrtStakepoolGetCurrentTime();
       const wallet = useWallet();
       const address = wallet.address;
       this.wallet_address = address;
@@ -148,8 +175,9 @@ export const ScrtStakepoolDefinition = {
         await this.get_viewing_key_helper();
       }
       const msg = {
-        available_tokens_for_withdrawl: {
+        available_for_withdrawl: {
           address: this.wallet_address,
+          current_time: this.current_time,
           key: this.vk,
         },
       };
@@ -157,7 +185,11 @@ export const ScrtStakepoolDefinition = {
       try {
         res = await this.scrtClient.queryContract(this.contractAddress, msg);
         this.available_tokens_for_withdrawl =
-          res.available_tokens_for_withdrawl.amount;
+          res.available_for_withdrawl.amount;
+        // console.log(
+        //   "Amount available_tokens_for_withdrawl",
+        //   this.available_tokens_for_withdrawl
+        // );
       } catch (e) {
         console.log(e);
       }
@@ -170,9 +202,6 @@ export const ScrtStakepoolDefinition = {
       if (!this.vk) {
         await this.get_viewing_key_helper();
       }
-
-      // console.log(this.wallet_address);
-      // console.log(this.vk);
 
       const msg = {
         user_past_records: {
@@ -259,19 +288,19 @@ export const ScrtStakepoolDefinition = {
     },
 
     async syncer_function_for_vk() {
-      await this.scrtStakepoolGetBalance();
+      await this.scrtStakepoolGetuser_deposits();
       await this.scrtStakepoolGetUserPastRecords();
       await this.scrtStakepoolGetAvailableForWithdrawl();
     },
 
     async syncer_function_for_deposit() {
-      await this.scrtStakepoolGetTotalscrtDeposits();
-      await this.scrtStakepoolGetBalance();
+      await this.scrtStakepoolGetTotalRewards();
+      await this.scrtStakepoolGetuser_deposits();
     },
     async syncer_function_for_trigger_withdraw_and_redelegate() {
       console.log("called");
       await this.scrtStakepoolGetTotalscrtDeposits();
-      await this.scrtStakepoolGetBalance();
+      await this.scrtStakepoolGetuser_deposits();
       await this.scrtStakepoolGetAvailableForWithdrawl();
     },
     async syncer_function_for_withdraw() {
@@ -286,7 +315,7 @@ export const ScrtStakepoolDefinition = {
         try {
           const vks = useVKs();
           let vkey = await vks.createViewingKey(this.contractAddress);
-          // console.log("Inside set or get viewing #scrt_token_def");
+          console.log("Inside set or get viewing #scrt_token_def");
           this.vk = vkey;
           console.log(this.vk);
         } catch (err) {
@@ -296,37 +325,40 @@ export const ScrtStakepoolDefinition = {
         // console.log(this.vk);
       }
       this.syncer_function_for_vk();
+      console.log(this.vk);
     },
     async scrtStakepoolDeposit(depositAmount) {
-      let final_deposit_amount_in_uscrt = depositAmount.toString();
-      const Handlemsg = { deposit: {} };
-      let res;
+      let final_withdraw_amount_in_uscrt = depositAmount.toString();
 
-      const msg = {
-        send: {
-          recipient: this.contractAddress,
-          amount: final_deposit_amount_in_uscrt,
-          msg: Handlemsg,
+      const msg = { deposit: {} };
+      const transferAmount = [
+        {
+          amount: final_withdraw_amount_in_uscrt,
+          denom: "uscrt",
         },
-      };
+      ];
       try {
-        res = await this.scrtClient.executeContract(
+        const res = await this.scrtClient.executeContract(
+          this.contractAddress,
           msg,
-          undefined,
-          undefined,
-          fees
+          "memo",
+          transferAmount
         );
-        // await this.syncer_function_for_deposit();
-        // return [
-        //   true,
-        //   final_deposit_amount_in_uscrt,
-        //   this.total_deposits,
-        //   this.balance,
-        //   "sucess",
-        // ];
+        await this.syncer_function_for_deposit();
+
         console.log(res);
+        console.log(this.user_deposits);
+        console.log(this.scrt_total_deposits);
+
+        return [
+          true,
+          final_withdraw_amount_in_uscrt,
+          this.scrt_total_deposits,
+          this.user_deposits,
+          "success",
+        ];
       } catch (e) {
-        // await this.syncer_function_for_deposit();
+        await this.syncer_function_for_deposit();
 
         console.log(e);
         return [false, 0, 0, 0, e];
@@ -334,8 +366,7 @@ export const ScrtStakepoolDefinition = {
     },
 
     async scrtStakepoolWithdraw(amount) {
-      let final_withdraw_amount_in_uscrt = (amount * 1000000).toString();
-      const msg = { withdraw: {} };
+      let final_withdraw_amount_in_uscrt = amount.toString();
       if (final_withdraw_amount_in_uscrt > 0) {
         const msg = { withdraw: { amount: final_withdraw_amount_in_uscrt } };
         try {
@@ -358,7 +389,7 @@ export const ScrtStakepoolDefinition = {
     },
 
     async scrtStakepoolTriggerWithdraw(amount) {
-      let final_trigger_amount_in_uscrt = (amount * 1000000).toString();
+      let final_trigger_amount_in_uscrt = amount.toString();
       const msg = {
         trigger_withdraw: { amount: final_trigger_amount_in_uscrt },
       };
@@ -370,7 +401,7 @@ export const ScrtStakepoolDefinition = {
           undefined,
           fees
         );
-        // console.log(res);
+        console.log(res);
         await this.syncer_function_for_trigger_withdraw_and_redelegate();
         return [true, this.available_tokens_for_withdrawl];
       } catch (e) {
@@ -380,7 +411,7 @@ export const ScrtStakepoolDefinition = {
       }
     },
     async scrtStakepoolredelegate(amount) {
-      let final_deposit_amount_in_uscrt = (amount * 1000000).toString();
+      let final_deposit_amount_in_uscrt = amount.toString();
       let msg = { redelegate: {} };
       if (amount > 0) {
         msg = { redelegate: { amount: final_deposit_amount_in_uscrt } };

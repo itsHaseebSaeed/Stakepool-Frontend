@@ -287,7 +287,7 @@ export default {
 
       on_going_transaction: undefined,
       successful: undefined,
-      total_deposits: undefined,
+      sefi_total_deposits: undefined,
       staked_total: undefined,
     };
   },

@@ -249,7 +249,7 @@ export default {
 
       on_going_transaction: undefined,
       successful: undefined,
-      total_deposits: undefined,
+      sefi_total_deposits: undefined,
       staked_total: undefined,
     };
   },
@@ -299,9 +299,9 @@ export default {
 
         this.successful = temp_array[0];
         depositamount = temp_array[1];
-        this.total_deposits = temp_array[2];
+        this.sefi_total_deposits = temp_array[2];
         this.staked_total = temp_array[3];
-        console.log("THE TOTAL DEPOSITS", this.total_deposits);
+        console.log("THE TOTAL DEPOSITS", this.sefi_total_deposits);
         await this.getSefiContractBalance();
 
         if (this.successful) {
@@ -312,8 +312,8 @@ export default {
           this.$emit("sucessfulDeposit", {
             current_deposits: bg_depositamount.toNumber(),
             denom: "SEFI",
-            pool_share: (this.staked_total / this.total_deposits) * 100,
-            total_deposits: this.staked_total,
+            pool_share: (this.staked_total / this.sefi_total_deposits) * 100,
+            sefi_total_deposits: this.staked_total,
           });
         } else {
           let res = setTimeout(this.getSefiContractBalance, 4000);

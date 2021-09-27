@@ -4,18 +4,40 @@
       <div
         class="col-lg-3 d-flex justify-content-lg-start justify-content-center"
       >
-        <span class="d-inline ms-2 d-flex align-items-center">
-          <img src="../../images/logo.png" alt="Logo" class="mini-logo-size" />
-        </span>
-        <span class="pool_stats_scrt_to_dollar ms-2 text-white">SCRT</span>
-      </div>
-
-      <div class="col-lg-4 text-white m-auto mb-4">
-        <div class="d-block clearfix d-flex justify-content-center">
-          <div class="prize_amount">$46,000</div>
+        <div
+          class="d-inline ms-2 d-flex align-items-center justify-content-start"
+        >
+          <img
+            src="../../images/scrt_logo.png"
+            alt="Logo"
+            class="mini-logo-size"
+          />
         </div>
-        <div class="d-block clearfix d-flex justify-content-center">
-          <span class="">Prize</span>
+        <div class="pool_stats_scrt_to_dollar ms-2 text-white">SCRT</div>
+      </div>
+      <div class="col-lg-4 text-white m-auto mb-3">
+        <div class="d-block clearfix">
+          <div
+            v-if="scrt_total_rewards"
+            class="d-flex justify-content-center prize_amount"
+          >
+            ${{
+              coinConvert(
+                coinConvert(scrt_total_rewards / 1000000, 0, "human", 1) *
+                  scrt_token_current_price,
+                0,
+                "human",
+                1
+              )
+            }}
+          </div>
+          <div v-else class="d-flex justify-content-center prize_amount">
+            $0
+          </div>
+        </div>
+
+        <div class="d-block clearfix">
+          <span class="d-flex justify-content-center">Prize</span>
         </div>
       </div>
       <div class="col-lg-5">
@@ -25,11 +47,13 @@
             <div class="row d-flex justify-content-between" id="datetimestamps">
               <div class="col-2">
                 <div class="row">
-                  <span class="col-5 date_digit d-flex justify-content-center"
-                    >1</span
+                  <span
+                    class="col-5 date_digit d-flex justify-content-center"
+                    >{{ days1 }}</span
                   >
-                  <span class="col-5 date_digit d-flex justify-content-center"
-                    >2</span
+                  <span
+                    class="col-5 date_digit d-flex justify-content-center"
+                    >{{ days2 }}</span
                   >
                 </div>
                 <div class="row">
@@ -44,11 +68,13 @@
 
               <div class="col-2">
                 <div class="row d-flex justify-content-around">
-                  <span class="col-5 date_digit d-flex justify-content-center"
-                    >1</span
+                  <span
+                    class="col-5 date_digit d-flex justify-content-center"
+                    >{{ hours1 }}</span
                   >
-                  <span class="col-5 date_digit d-flex justify-content-center"
-                    >4</span
+                  <span
+                    class="col-5 date_digit d-flex justify-content-center"
+                    >{{ hours2 }}</span
                   >
                 </div>
                 <div class="row">
@@ -62,11 +88,13 @@
               </div>
               <div class="col-2">
                 <div class="row d-flex justify-content-around">
-                  <span class="col-5 date_digit d-flex justify-content-center"
-                    >1</span
+                  <span
+                    class="col-5 date_digit d-flex justify-content-center"
+                    >{{ mins1 }}</span
                   >
-                  <span class="col-5 date_digit d-flex justify-content-center"
-                    >2</span
+                  <span
+                    class="col-5 date_digit d-flex justify-content-center"
+                    >{{ mins2 }}</span
                   >
                 </div>
                 <div class="row">
@@ -80,11 +108,13 @@
               </div>
               <div class="col-2">
                 <div class="row d-flex justify-content-around">
-                  <span class="col-5 date_digit d-flex justify-content-center"
-                    >1</span
+                  <span
+                    class="col-5 date_digit d-flex justify-content-center"
+                    >{{ secs1 }}</span
                   >
-                  <span class="col-5 date_digit d-flex justify-content-center"
-                    >2</span
+                  <span
+                    class="col-5 date_digit d-flex justify-content-center"
+                    >{{ secs2 }}</span
                   >
                 </div>
                 <div class="row">
@@ -100,7 +130,7 @@
                   type="button"
                   class="btn deposit_button"
                   data-bs-toggle="modal"
-                  data-bs-target="#withdrawSuccessModal"
+                  data-bs-target="#scrtDepositModal"
                 >
                   Deposit
                 </button>
@@ -112,3 +142,35 @@
     </div>
   </div>
 </template>
+
+<script>
+import { useScrtStakepoolStore } from "../../contracts";
+import { mapState, mapActions } from "pinia";
+import { coinConvert } from "@stakeordie/griptape.js";
+
+export default {
+  name: "pool_view_scrt_card",
+  created() {},
+  mounted() {
+    // this.timer = window.setInterval(this.sync_timer, 1000);
+  },
+
+  computed: {
+    ...mapState(useScrtStakepoolStore, [
+      "days1",
+      "hours1",
+      "mins1",
+      "secs1",
+      "days2",
+      "hours2",
+      "mins2",
+      "secs2",
+      "scrt_total_rewards",
+      "scrt_token_current_price",
+    ]),
+  },
+  methods: {
+    coinConvert,
+  },
+};
+</script>

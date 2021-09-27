@@ -7,17 +7,35 @@
         <div class="col-6 pool_stats_subheadings">Total Deposits</div>
         <div class="col-6 d-flex justify-content-end">
           <div class="row">
-            <div class="col-sm-4 d-flex justify-content-end">
-              <span class="pool_stats_scrt_to_dollar"> ($900000) </span>
-            </div>
-            <div class="col-sm-4 d-flex justify-content-end">
-              <span>$920000</span>
-            </div>
-            <div class="col-sm-4">
-              <div class="d-flex justify-content-end">
-                <span class="d-flex align-items-center">
-                  <img src="../../images/logo.png" alt="Logo" height="20px" />
+            <div class="d-flex justify-content-end align-items-center">
+              <div class="me-3">
+                <span class="pool_stats_scrt_to_dollar pool_past_prizes">
+                  (${{
+                    coinConvert(
+                      coinConvert(scrt_total_deposits, 6, "human", 1) *
+                        scrt_token_current_price,
+                      0,
+                      "human",
+                      1
+                    )
+                  }})
                 </span>
+              </div>
+              <div class="me-3">
+                <span>{{
+                  coinConvert(scrt_total_deposits, 6, "human", 1)
+                }}</span>
+              </div>
+              <div class="">
+                <span class="d-flex align-items-center">
+                  <img
+                    src="../../images/scrt_logo.png"
+                    alt="Logo"
+                    class="mini-logo-size"
+                  />
+                </span>
+              </div>
+              <div class="d-flex justify-content-end">
                 <span class="text-white">SCRT</span>
               </div>
             </div>
@@ -26,11 +44,15 @@
       </div>
 
       <div class="row g-0 mt-3 align-items-center">
-        <div class="col-4 pool_stats_subheadings">Yield Source</div>
-        <div class="col-8">
+        <div class="col-5 pool_stats_subheadings">Yield Source</div>
+        <div class="col-7">
           <div class="d-flex justify-content-end">
             <span class="d-inline d-flex align-items-center">
-              <img src="../../images/logo.png" alt="Logo" height="20px" />
+              <img
+                src="../../images/scrt_logo.png"
+                alt="Logo"
+                class="mini-logo-size"
+              />
             </span>
             <span
               class="
@@ -40,24 +62,43 @@
                 justify-content-end
                 align-items-end
               "
-              >Compound finance</span
+              >SecretSwap</span
             >
           </div>
         </div>
       </div>
 
-      <div class="row mt-3 g-0">
+      <div class="row mt-3 g-0 line">
         <div class="col-12"></div>
       </div>
 
       <div class="row g-0 mt-3 align-items-center">
-        <div class="col-6 pool_stats_subheadings">Expected Weekly Prize</div>
+        <div class="col-6 g-0 pool_stats_subheadings">
+          Expected Weekly Prize
+        </div>
         <div class="col-6">
-          <div class="col-12 d-inline d-flex justify-content-end">
-            <span class="text-white me-2 d-inline">33000</span>
-            <span class="d-flex align-items-center">
-              <img src="../../images/logo.png" alt="Logo" height="20px" />
-            </span>
+          <div class="row">
+            <div class="d-flex justify-content-end align-items-center">
+              <div class="me-3">
+                <span>{{
+                  coinConvert(scrt_total_rewards / 1000000, 0, "humans", 1)
+                }}</span>
+              </div>
+
+              <div class="d-flex align-items-center">
+                <span class="d-flex align-items-center">
+                  <img
+                    src="../../images/scrt_logo.png"
+                    alt="Logo"
+                    class="mini-logo-size"
+                  />
+                </span>
+              </div>
+
+              <div class="d-flex align-items-center">
+                <span class="text-white">SCRT</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -68,10 +109,29 @@
         </div>
         <div class="col-6">
           <div class="col-12 d-inline d-flex justify-content-end">
-            <span class="text-white me-2 d-inline">49.34%</span>
+            <span class="text-white d-inline">30.34%</span>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import { mapState, mapActions } from "pinia";
+import { coinConvert } from "@stakeordie/griptape.js";
+import { useScrtStakepoolStore } from "../../contracts";
+
+export default {
+  computed: {
+    ...mapState(useScrtStakepoolStore, [
+      "scrt_total_deposits",
+      "scrt_total_rewards",
+      "scrt_token_current_price",
+    ]),
+  },
+  methods: {
+    coinConvert,
+  },
+};
+</script>
