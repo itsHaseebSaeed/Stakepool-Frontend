@@ -24,7 +24,10 @@
               justify-content-lg-start justify-content-center
             "
           >
-            <div v-if="user_deposits >= 9999">
+            <div
+              class="d-flex justify-content-lg-start justify-content-center g-0"
+              v-if="user_deposits >= 9999"
+            >
               ${{
                 coinConvert(
                   coinConvert(user_deposits, 6, "human", 2) *

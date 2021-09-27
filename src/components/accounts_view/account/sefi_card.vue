@@ -24,7 +24,10 @@
               justify-content-lg-start justify-content-center
             "
           >
-            <div v-if="balance >= 9999">
+            <div
+              class="d-flex justify-content-lg-start justify-content-center g-0"
+              v-if="balance >= 9999"
+            >
               ${{
                 coinConvert(
                   coinConvert(balance, 6, "human", 2) *
