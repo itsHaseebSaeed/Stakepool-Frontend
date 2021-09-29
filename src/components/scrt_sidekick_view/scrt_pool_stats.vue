@@ -9,7 +9,9 @@
           <div class="row">
             <div class="d-flex justify-content-end align-items-center">
               <div class="me-3">
-                <span class="pool_stats_scrt_to_dollar pool_past_prizes">
+                <span
+                  class="pool_stats_scrt_to_dollar pool_past_prizes fst-italic"
+                >
                   (${{
                     coinConvert(
                       coinConvert(scrt_total_deposits, 6, "human", 1) *
@@ -47,6 +49,27 @@
         <div class="col-6 g-0 pool_stats_subheadings">Your deposits</div>
         <div v-if="user_deposits >= 9999" class="col-6">
           <div class="d-flex justify-content-end align-items-center">
+            <div
+              class="
+                d-flex
+                justify-content-end
+                align-items-center
+                account_winning_odds_value
+                fst-italic
+                me-3
+              "
+            >
+              <span>
+                ({{
+                  coinConvert(
+                    (user_deposits / scrt_total_deposits) * 100,
+                    0,
+                    "human",
+                    2
+                  )
+                }}%)
+              </span>
+            </div>
             <div class="me-3">
               <span>{{
                 coinConvert(user_deposits / 1000000, 0, "humans", 1)

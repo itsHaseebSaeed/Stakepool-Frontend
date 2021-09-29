@@ -102,7 +102,7 @@
               Winning odds
             </div>
             <div
-              v-if="user_deposits != 0"
+              v-if="user_deposits >= 999"
               class="
                 row
                 account_winning_odds_value

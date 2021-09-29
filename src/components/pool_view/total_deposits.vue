@@ -13,7 +13,15 @@
         <div class="row d-flex justify-content-end">
           <div class="col-lg-6">
             <div class="row">
-              <h1 class="d-flex justify-content-end text-white m-0">
+              <h1
+                v-if="
+                  sefi_total_deposits &&
+                  sefi_token_current_price &&
+                  scrt_total_deposits &&
+                  scrt_token_current_price
+                "
+                class="d-flex justify-content-end text-white m-0"
+              >
                 $
                 {{
                   coinConvert(
@@ -32,6 +40,10 @@
                   )
                 }}
               </h1>
+
+              <h1 v-else class="d-flex justify-content-end text-white m-0">
+                $ 0
+              </h1>
             </div>
             <div class="row">
               <div class="d-flex justify-content-end secondary_heading">
@@ -41,7 +53,15 @@
           </div>
           <div class="col-lg-6">
             <div class="row">
-              <h1 class="d-flex justify-content-end text-white m-0">
+              <h1
+                v-if="
+                  sefi_total_rewards &&
+                  sefi_token_current_price &&
+                  scrt_total_rewards &&
+                  scrt_token_current_price
+                "
+                class="d-flex justify-content-end text-white m-0"
+              >
                 ${{
                   coinConvert(
                     coinConvert(sefi_total_rewards / 1000000, 0, "human", 1) *
@@ -53,6 +73,10 @@
                     1
                   )
                 }}
+              </h1>
+
+              <h1 v-else class="d-flex justify-content-end text-white m-0">
+                $ 0
               </h1>
             </div>
             <div class="row">
