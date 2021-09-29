@@ -11447,6 +11447,10 @@ textarea.form-control-lg {
   background-color: #0f4d4a;
 }
 
+.modal .modal-content {
+  background: #0f4d4a;
+}
+
 .deposit-modal-shape {
   border-radius: 10px;
   padding: 2px;
@@ -11520,10 +11524,6 @@ input[type=number]::-webkit-input-placeholder {
   border-radius: 5px;
   border: 0;
   color: #fff;
-}
-
-.deposit-modal-amount-percentage:hover {
-  background-color: #136762;
 }
 
 .success-modal-bg {

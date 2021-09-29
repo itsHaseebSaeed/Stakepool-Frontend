@@ -357,8 +357,8 @@ export default {
             balance: this.sefi_token_balance,
           });
         } else {
-          let timer = setTimeout(this.syncer_function_for_withdraw, 4000);
-          let timer2 = setTimeout(this.getSefiContractBalance, 4000);
+          let timer = await setTimeout(this.syncer_function_for_withdraw, 4000);
+          let timer2 = await setTimeout(this.getSefiContractBalance, 4000);
 
           console.log(this.available_tokens_for_withdrawl);
 

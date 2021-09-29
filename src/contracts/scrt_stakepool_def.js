@@ -31,14 +31,15 @@ export const ScrtStakepoolDefinition = {
   },
   queries: {
     async scrtStakepoolPoolViewEntryPoint() {
-      await this.scrtStakepoolGetLotteryInfo();
+      await this.scrtStakepoolGetScrtCurrentPrice();
       await this.scrtStakepoolGetTotalRewards();
+      await this.scrtStakepoolGetLotteryInfo();
       await this.scrtStakepoolGetAvailableForWithdrawl();
     },
 
     async scrtStakepoolAccountViewEntryPoint() {
-      this.get_viewing_key_helper();
-      this.syncer_function_for_vk();
+      await this.get_viewing_key_helper();
+      await this.syncer_function_for_vk();
     },
 
     //Sets Time and set Timer
@@ -72,18 +73,15 @@ export const ScrtStakepoolDefinition = {
     },
 
     async scrtStakepoolGetTotalscrtDeposits() {
+      console.log("Working total scrt deposits");
       const msg = { total_deposits: {} };
       let res;
       try {
         res = await this.scrtClient.queryContract(this.contractAddress, msg);
-        // console.log(res);
+        this.scrt_total_deposits = res.total_deposits.deposits;
       } catch (err) {
         console.log(err);
       }
-      this.scrt_total_deposits = res.total_deposits.deposits;
-      // console.log("total deposits", this.scrt_total_deposits);
-
-      // console.log(this.total_deposits);
     },
 
     async scrtStakepoolGetPublicPastRewards() {
@@ -329,7 +327,6 @@ export const ScrtStakepoolDefinition = {
     },
     async scrtStakepoolDeposit(depositAmount) {
       let final_withdraw_amount_in_uscrt = depositAmount.toString();
-
       const msg = { deposit: {} };
       const transferAmount = [
         {
@@ -344,11 +341,12 @@ export const ScrtStakepoolDefinition = {
           "memo",
           transferAmount
         );
-        await this.syncer_function_for_deposit();
 
         console.log(res);
         console.log(this.user_deposits);
         console.log(this.scrt_total_deposits);
+
+        await this.syncer_function_for_deposit();
 
         return [
           true,

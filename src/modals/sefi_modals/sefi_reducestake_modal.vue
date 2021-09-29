@@ -320,7 +320,7 @@ export default {
             current_reduce_stakes_amount: bg_reduceStakesAmount.toNumber(),
           });
         } else {
-          let res = setTimeout(
+          let res = await setTimeout(
             this.syncer_function_for_trigger_withdraw_and_redelegate,
             5000
           );

@@ -175,6 +175,7 @@
                     class="btn account_reduce_stakes_withdraw_button"
                     data-bs-toggle="modal"
                     data-bs-target="#scrtWithdrawModal"
+                    :disabled="available_tokens_for_withdrawl == 0"
                   >
                     Withdraw
                   </button>
@@ -218,6 +219,7 @@ export default {
     ...mapState(useWalletStore, ["balance"]),
 
     ...mapState(useScrtStakepoolStore, [
+      "available_tokens_for_withdrawl",
       "scrt_token_current_price",
       "scrt_total_deposits",
       "user_deposits",

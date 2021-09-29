@@ -279,6 +279,7 @@ export default {
       "available_tokens_for_withdrawl",
       "scrt_token_current_price",
     ]),
+    ...mapState(useWalletStore, ["balance"]),
   },
 
   methods: {
@@ -330,10 +331,10 @@ export default {
           this.$emit("sucessfulWithdraw", {
             current_withdraw_amount: bg_withdraw_amount.toNumber(),
             denom: "SCRT",
-            balance: this.user_deposits,
+            balance: this.balance,
           });
         } else {
-          let timer = setTimeout(this.syncer_function_for_withdraw, 4000);
+          let timer = await setTimeout(this.syncer_function_for_withdraw, 4000);
 
           console.log(this.available_tokens_for_withdrawl);
 

@@ -148,32 +148,31 @@ export default {
       import("./modals/success_modals/success_withdraw_modal.vue")
     ),
   },
-  created() {
+  created() {},
+  mounted() {
     this.sefiStakepoolPoolViewEntryPoint();
     this.scrtStakepoolPoolViewEntryPoint();
-  },
-  mounted() {
-    this.timer0 = window.setTimeout(
+    this.timer0 = window.setTimeout(this.getSefiContractBalance, 1000);
+
+    this.timer1 = window.setTimeout(
       this.sefiStakepoolAccountViewEntryPoint,
       1000
     );
-    this.timer1 = window.setTimeout(this.scrtStakepoolPoolViewEntryPoint, 1000);
-    this.timer = window.setInterval(this.sefiStakepoolSyncTimer, 1000);
+    this.timer2 = window.setTimeout(
+      this.scrtStakepoolAccountViewEntryPoint,
+      1000
+    );
     this.timer3 = window.setInterval(this.scrtStakepoolSyncTimer, 1000);
 
-    this.timer2 = window.setTimeout(this.getSefiContractBalance, 1000);
-
-    //testing only
-    this.scrtStakepoolGetPublicPastRewards();
-    this.scrtStakepoolGetScrtCurrentPrice();
+    this.timer4 = window.setInterval(this.sefiStakepoolSyncTimer, 1000);
   },
 
   methods: {
     ...mapActions(useScrtStakepoolStore, [
       "scrtStakepoolSyncTimer",
-      "scrtStakepoolGetPublicPastRewards",
-      "scrtStakepoolGetScrtCurrentPrice",
+
       "scrtStakepoolPoolViewEntryPoint",
+      "scrtStakepoolAccountViewEntryPoint",
     ]),
     ...mapActions(useSefiStakepoolStore, [
       "sefiStakepoolSyncTimer",

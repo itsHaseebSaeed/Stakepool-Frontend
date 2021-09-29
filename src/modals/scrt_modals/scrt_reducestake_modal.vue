@@ -39,6 +39,35 @@
                 ></button>
               </div>
             </div>
+            <div class="row m-0 p-0 mt-3 g-0 text-white fw-lighter">
+              <span class="">
+                This will remove your SCRT tokens from the rewards contract. You
+                will have to withdraw your SCRT to see it in your wallet
+              </span>
+            </div>
+
+            <div class="row m-0 p-0 g-0 rounded-3 p-4 border mt-4">
+              <div class="col-2 d-flex justify-content-start align-items-start">
+                <span class="deposit-modal-heading fs-1">&#9888;</span>
+              </div>
+              <div
+                class="
+                  col-10
+                  d-flex
+                  justify-content-start
+                  align-items-center
+                  white
+                "
+              >
+                <div class="ul">
+                  Once the unbonding period begins you will:
+                  <div class="li">- not be able to cancel the unbonding</div>
+                  <div class="li">
+                    - need to wait 21 days for the amount to be liquid
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div class="row m-0 p-0 mt-3 g-0">
               <div
@@ -100,13 +129,6 @@
                   </a>
                 </span>
               </div>
-            </div>
-
-            <div class="row m-0 p-0 mt-3 g-0 text-white fw-lighter">
-              <span class="">
-                This will remove your SCRT tokens from the rewards contract. You
-                will have to withdraw your SCRt to see it in your wallet
-              </span>
             </div>
 
             <div class="row m-0 p-0 mt-3" v-if="overflow_warning">
@@ -314,7 +336,7 @@ export default {
             current_reduce_stakes_amount: bg_reduceStakesAmount.toNumber(),
           });
         } else {
-          let res = setTimeout(
+          let res = await setTimeout(
             this.syncer_function_for_trigger_withdraw_and_redelegate,
             5000
           );

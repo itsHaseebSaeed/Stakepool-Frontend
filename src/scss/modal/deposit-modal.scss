@@ -1,7 +1,11 @@
-@use '../custom' as *;
+@use "../custom" as *;
 
 .deposit-modal-bg {
   background-color: $primary3;
+}
+
+.modal .modal-content {
+  background: $primary3;
 }
 
 .deposit-modal-shape {
@@ -76,8 +80,4 @@ input[type="number"]::-webkit-input-placeholder {
   border-radius: 5px;
   border: 0;
   color: #fff;
-}
-
-.deposit-modal-amount-percentage:hover {
-  background-color: $primary4;
 }

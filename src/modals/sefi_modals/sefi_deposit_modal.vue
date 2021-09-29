@@ -287,7 +287,10 @@ export default {
         console.log(depositamount);
 
         this.overflow_warning = true;
-      } else if (bg_depositamount.isLessThan(1) || bg_depositamount.isNaN()) {
+      } else if (
+        bg_depositamount.isLessThan(1000000) ||
+        bg_depositamount.isNaN()
+      ) {
         this.underflow_warning = true;
       } else {
         this.on_going_transaction = true;
@@ -313,11 +316,11 @@ export default {
             current_deposits: bg_depositamount.toNumber(),
             denom: "SEFI",
             pool_share: (this.staked_total / this.sefi_total_deposits) * 100,
-            sefi_total_deposits: this.staked_total,
+            total_deposits: this.staked_total,
           });
         } else {
-          let res = setTimeout(this.getSefiContractBalance, 4000);
-          let res2 = setTimeout(this.syncer_function_for_deposit, 4000);
+          let res = await setTimeout(this.getSefiContractBalance, 4000);
+          let res2 = await setTimeout(this.syncer_function_for_deposit, 4000);
           this.clearFields();
           this.on_going_transaction = false;
           this.$refs.closeBtn.click();

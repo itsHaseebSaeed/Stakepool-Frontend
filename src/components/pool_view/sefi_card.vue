@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid p-0 m-0">
-    <div class="row mt-3 p-3 pool_view_card align-items-center">
+    <div class="row mt-3 mb-3 p-3 pool_view_card align-items-center">
       <div
         class="col-lg-3 d-flex justify-content-lg-start justify-content-center"
       >

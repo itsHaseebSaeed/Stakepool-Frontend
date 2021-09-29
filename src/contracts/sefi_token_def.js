@@ -33,15 +33,19 @@ export const SefiTokenDefinition = {
           key: this.sefi_token_key,
         },
       };
-      const res = await this.scrtClient.queryContract(
-        this.contractAddress,
-        msg
-      );
-      this.sefi_token_balance = res.balance.amount;
-      // console.log("SEFI balance: " + this.sefi_token_balance);
-      this.sefi_token_balance_in_usd =
-        (this.sefi_token_balance / 1000000) * this.sefi_token_current_price;
-      // console.log(this.sefi_token_balance);
+      try {
+        const res = await this.scrtClient.queryContract(
+          this.contractAddress,
+          msg
+        );
+        this.sefi_token_balance = res.balance.amount;
+        // console.log("SEFI balance: " + this.sefi_token_balance);
+        this.sefi_token_balance_in_usd =
+          (this.sefi_token_balance / 1000000) * this.sefi_token_current_price;
+        // console.log(this.sefi_token_balance);
+      } catch (e) {
+        console.log(e);
+      }
     },
 
     async getCurrentSefiPrice() {

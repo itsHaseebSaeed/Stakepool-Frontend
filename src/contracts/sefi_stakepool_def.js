@@ -30,13 +30,13 @@ export const SefiStakepoolDefinition = {
   },
   queries: {
     async sefiStakepoolPoolViewEntryPoint() {
-      await this.sefiStakepoolGetLotteryInfo();
       await this.sefiStakepoolGetTotalSefiRewards();
+      await this.sefiStakepoolGetLotteryInfo();
     },
 
     async sefiStakepoolAccountViewEntryPoint() {
-      this.get_viewing_key_helper();
-      this.syncer_function_for_vk();
+      await this.get_viewing_key_helper();
+      await this.syncer_function_for_vk();
     },
 
     //Sets Time and set Timer
@@ -45,11 +45,11 @@ export const SefiStakepoolDefinition = {
       let res;
       try {
         res = await this.scrtClient.queryContract(this.contractAddress, msg);
+        this.start_time = res.lottery_info.start_height;
+        this.end_time = res.lottery_info.end_height;
       } catch (e) {
         console.log(e);
       }
-      this.start_time = res.lottery_info.start_height;
-      this.end_time = res.lottery_info.end_height;
 
       await this.sefiStakepoolGetLotteryInfoHelper();
     },
@@ -59,10 +59,10 @@ export const SefiStakepoolDefinition = {
       let res;
       try {
         res = await this.scrtClient.queryContract(this.contractAddress, msg);
+        this.sefi_total_deposits = res.total_deposits.deposits;
       } catch (err) {
         console.log(err);
       }
-      this.sefi_total_deposits = res.total_deposits.deposits;
       // console.log(this.sefi_total_deposits);
     },
 
@@ -117,19 +117,22 @@ export const SefiStakepoolDefinition = {
       if (!this.vk) {
         await this.get_viewing_key_helper();
       }
+      try {
+        const msg = {
+          balance: {
+            address: this.wallet_address,
+            key: this.vk,
+          },
+        };
+        const res = await this.scrtClient.queryContract(
+          this.contractAddress,
+          msg
+        );
 
-      const msg = {
-        balance: {
-          address: this.wallet_address,
-          key: this.vk,
-        },
-      };
-      const res = await this.scrtClient.queryContract(
-        this.contractAddress,
-        msg
-      );
-      this.balance = res.balance.amount;
-      // console.log("balance" + this.balance);
+        this.balance = res.balance.amount;
+      } catch (err) {
+        console.log(err);
+      }
     },
 
     async sefiStakepoolGetAvailableForWithdrawl() {
@@ -150,10 +153,6 @@ export const SefiStakepoolDefinition = {
         res = await this.scrtClient.queryContract(this.contractAddress, msg);
         this.available_tokens_for_withdrawl =
           res.available_tokens_for_withdrawl.amount;
-        // console.log(
-        //   "Amount available for withdrawl: " +
-        //     this.available_tokens_for_withdrawl
-        // );
       } catch (e) {
         console.log(e);
       }
@@ -182,16 +181,12 @@ export const SefiStakepoolDefinition = {
       } catch (err) {
         console.log(err);
       }
-      // console.log(res);
       let temp_array = [];
 
       temp_array = res.user_past_records.winning_history;
-      // console.log(temp_array);
       this.user_past_records = temp_array;
 
       for (var i = 0; i < temp_array.length; i++) {
-        // console.log("working");
-
         this.user_past_records[i][0] = temp_array[i][0];
         var date = new Date(temp_array[i][1] * 1000);
         var options = {
@@ -204,7 +199,7 @@ export const SefiStakepoolDefinition = {
 
       this.user_past_records = temp_array;
 
-      // console.log(this.user_past_records);
+      console.log(this.user_past_records);
       // console.log(temp_array);
     },
 

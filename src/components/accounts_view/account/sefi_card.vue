@@ -175,6 +175,7 @@
                     class="btn account_reduce_stakes_withdraw_button"
                     data-bs-toggle="modal"
                     data-bs-target="#sefiWithdrawModal"
+                    :disabled="available_tokens_for_withdrawl == 0"
                   >
                     Withdraw
                   </button>
@@ -229,6 +230,7 @@ export default {
       "hours2",
       "mins2",
       "secs2",
+      "available_tokens_for_withdrawl",
     ]),
     ...mapState(useSefiContractStore, ["sefi_token_current_price"]),
   },

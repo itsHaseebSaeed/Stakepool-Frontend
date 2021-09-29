@@ -12,8 +12,8 @@
       </div>
 
       <div class="col-md-4 d-flex justify-content-center  ">
-        <router-link class="router-links p-md-2 px-2" active-class="router-link-active" to=/Stakepool-Frontend/ >Pools</router-link>
-        <router-link class="router-links p-md-2 px-2" exact-active-class="router-link-active" to=/Stakepool-Frontend/accounts >Accounts</router-link>
+        <router-link class="router-links mx-3 " active-class="router-link-active" to=/Stakepool-Frontend/ >Rewards Pool</router-link>
+        <router-link class="router-links mx-3" exact-active-class="router-link-active" to=/Stakepool-Frontend/accounts >My Page</router-link>
       </div>
 
       <div class="col-md-4 d-flex justify-content-end">

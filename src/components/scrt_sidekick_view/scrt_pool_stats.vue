@@ -44,6 +44,56 @@
       </div>
 
       <div class="row g-0 mt-3 align-items-center">
+        <div class="col-6 g-0 pool_stats_subheadings">Your deposits</div>
+        <div v-if="user_deposits >= 9999" class="col-6">
+          <div class="d-flex justify-content-end align-items-center">
+            <div class="me-3">
+              <span>{{
+                coinConvert(user_deposits / 1000000, 0, "humans", 1)
+              }}</span>
+            </div>
+
+            <div class="d-flex align-items-center">
+              <span class="d-flex align-items-center">
+                <img
+                  src="../../images/scrt_logo.png"
+                  alt="Logo"
+                  class="mini-logo-size"
+                />
+              </span>
+            </div>
+
+            <div class="d-flex align-items-center">
+              <span class="text-white">SCRT</span>
+            </div>
+          </div>
+        </div>
+
+        <div v-else class="col-6">
+          <span
+            class="
+              deposit-modal-amount
+              d-flex
+              justify-content-end
+              deposit-modal-amount
+            "
+          >
+            <span style="font-size: 20px">&#128269;</span>
+            <a
+              @click="scrtStakepoolCreateViewingKey()"
+              class="createViewingKey deposit-modal-dollars"
+            >
+              Create or Get Viewing Key
+            </a>
+          </span>
+        </div>
+      </div>
+
+      <div class="row mt-3 g-0 line">
+        <div class="col-12"></div>
+      </div>
+
+      <div class="row g-0 mt-3 align-items-center">
         <div class="col-5 pool_stats_subheadings">Yield Source</div>
         <div class="col-7">
           <div class="d-flex justify-content-end">
@@ -66,10 +116,6 @@
             >
           </div>
         </div>
-      </div>
-
-      <div class="row mt-3 g-0 line">
-        <div class="col-12"></div>
       </div>
 
       <div class="row g-0 mt-3 align-items-center">
@@ -128,10 +174,12 @@ export default {
       "scrt_total_deposits",
       "scrt_total_rewards",
       "scrt_token_current_price",
+      "user_deposits",
     ]),
   },
   methods: {
     coinConvert,
+    ...mapActions(useScrtStakepoolStore, ["scrtStakepoolCreateViewingKey"]),
   },
 };
 </script>

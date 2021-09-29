@@ -35,7 +35,7 @@
                 >
               </div>
             </div>
-            <div class="row g-0 mt-3">
+            <div class="row g-0 mt-3 mb-4">
               <div class="d-flex justify-content-center">
                 <span class="successfully_deposited_amount pe-3">{{
                   coinConvert(current_deposits, 6, "human", 2)
@@ -53,7 +53,7 @@
               </div>
             </div>
 
-            <div class="row g-0 mt-3">
+            <div v-if="pool_share" class="row g-0 mt-3">
               <div class="d-flex justify-content-center">
                 <span class="pe-2 success_modal-local-font-size white"
                   >Your share of the pool is
@@ -68,12 +68,15 @@
               </div>
             </div>
 
-            <div class="row g-0 mt-3">
+            <div v-if="total_deposits" class="row g-0 mt-3">
               <div class="d-flex justify-content-center">
-                <span class="pe-2 success_modal-local-font-size white"
-                  >You now have
-                  {{ coinConvert(total_deposits, 6, "human", 2) }}
-                  {{ denom }} in the Stake Pool!
+                <span class="pe-2 success_modal-local-font-size white">
+                  <span>You now have </span>
+                  <span class="successfully_deposited_amount-bg">{{
+                    coinConvert(total_deposits, 6, "human", 2)
+                  }}</span>
+                  <span>&#160;</span>
+                  <span>{{ denom }} in the Stake Pool!</span>
                 </span>
               </div>
             </div>
