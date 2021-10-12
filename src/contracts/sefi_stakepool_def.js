@@ -3,7 +3,7 @@ import { SefiTokenContractAddress } from "../contracts/index";
 import { useViewingKeyStore as useVKs } from "@stakeordie/griptape-vue.js";
 import { useWalletStore as useWallet } from "@stakeordie/griptape-vue.js";
 const fees = {
-  gas: "910000",
+  gas: "990000",
 };
 export const SefiStakepoolDefinition = {
   state: {
@@ -17,6 +17,8 @@ export const SefiStakepoolDefinition = {
     vk: undefined,
     wallet_address: undefined,
     past_rewards: undefined,
+    past_all_rewards: undefined,
+
     user_past_records: undefined,
     time_left: 0,
     days1: 0,
@@ -45,11 +47,13 @@ export const SefiStakepoolDefinition = {
       let res;
       try {
         res = await this.scrtClient.queryContract(this.contractAddress, msg);
-        this.start_time = res.lottery_info.start_height;
-        this.end_time = res.lottery_info.end_height;
+        this.start_time = res.lottery_info.start_time;
+        this.end_time = res.lottery_info.end_time;
       } catch (e) {
         console.log(e);
       }
+
+      console.log(res);
 
       await this.sefiStakepoolGetLotteryInfoHelper();
     },
@@ -67,7 +71,7 @@ export const SefiStakepoolDefinition = {
     },
 
     async sefiStakepoolGetPublicPastRewards() {
-      const msg = { past_all_results: {} };
+      const msg = { past_records: {} };
       let res;
       try {
         res = await this.scrtClient.queryContract(this.contractAddress, msg);
@@ -76,7 +80,7 @@ export const SefiStakepoolDefinition = {
       }
       let temp_array = [];
 
-      temp_array = res.past_results.past_rewards;
+      temp_array = res.past_records.past_rewards;
       // console.log(temp_array);
       this.past_rewards = temp_array;
 
@@ -95,6 +99,38 @@ export const SefiStakepoolDefinition = {
       }
 
       this.past_rewards = temp_array;
+
+      // console.log(this.past_rewards);
+    },
+
+    async sefiStakepoolGetPublicPastAllRewards() {
+      const msg = { past_all_results: {} };
+      let res;
+      try {
+        res = await this.scrtClient.queryContract(this.contractAddress, msg);
+      } catch (err) {
+        console.log(err);
+      }
+      let temp_array = [];
+
+      temp_array = res.past_results.past_rewards;
+      // console.log(temp_array);
+      this.past_all_rewards = temp_array;
+
+      for (var i = 0; i < temp_array.length; i++) {
+        // console.log("working");
+
+        this.past_all_rewards[i][0] = temp_array[i][0];
+        var date = new Date(temp_array[i][1] * 1000);
+        var options = {
+          month: "long", //to display the full name of the month
+          day: "numeric",
+        };
+        var sDate = date.toLocaleDateString("en-US", options);
+        temp_array[i][1] = sDate;
+      }
+
+      this.past_all_rewards = temp_array;
 
       // console.log(this.past_rewards);
     },
@@ -241,6 +277,8 @@ export const SefiStakepoolDefinition = {
 
       this.secs1 = Math.floor((temp_timer % 60) / 10);
       this.secs2 = Math.floor((temp_timer % 60) % 10);
+
+      // console.log("SECONDS", this.secs1, this.secs2);
     },
 
     async get_viewing_key_helper() {
@@ -277,29 +315,31 @@ export const SefiStakepoolDefinition = {
     async sefiStakepoolCreateViewingKey() {
       this.get_viewing_key_helper();
 
+      const fees = {
+        gas: "130000",
+      };
+
       if (!this.vk) {
         try {
           const vks = useVKs();
-          let vkey = await vks.createViewingKey(this.contractAddress);
-          // console.log("Inside set or get viewing #sefi_token_def");
+          let vkey = await vks.createViewingKey(this.contractAddress, fees);
           this.vk = vkey;
           console.log(this.vk);
         } catch (err) {
           console.log(err);
         }
       } else {
-        // console.log(this.vk);
       }
       this.syncer_function_for_vk();
     },
     async sefiStakepoolDeposit(depositAmount) {
+      const fees = {
+        gas: "800000",
+      };
       let final_deposit_amount_in_uSefi = depositAmount.toString();
       const Handlemsg = { deposit: {} };
       let res;
-      // const fees = {
-      //   amount: [{ amount: "0", denom: "uscrt" }],
-      //   gas: "900000",
-      // };
+
       const msg = {
         send: {
           recipient: this.contractAddress,
@@ -316,6 +356,7 @@ export const SefiStakepoolDefinition = {
           fees
         );
         await this.syncer_function_for_deposit();
+
         return [
           true,
           final_deposit_amount_in_uSefi,
@@ -331,6 +372,9 @@ export const SefiStakepoolDefinition = {
     },
 
     async sefiStakepoolWithdraw(amount) {
+      const fees = {
+        gas: "220000",
+      };
       let final_withdraw_amount_in_uSefi = amount.toString();
       const msg = { withdraw: {} };
       if (final_withdraw_amount_in_uSefi > 0) {
@@ -355,6 +399,9 @@ export const SefiStakepoolDefinition = {
     },
 
     async sefiStakepoolTriggerWithdraw(amount) {
+      const fees = {
+        gas: "830000",
+      };
       let final_trigger_amount_in_uSefi = amount.toString();
       const msg = {
         trigger_withdraw: { amount: final_trigger_amount_in_uSefi },

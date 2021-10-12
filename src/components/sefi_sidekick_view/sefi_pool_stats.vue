@@ -9,7 +9,9 @@
           <div class="row">
             <div class="d-flex justify-content-end align-items-center">
               <div class="me-3">
-                <span class="pool_stats_scrt_to_dollar pool_past_prizes">
+                <span
+                  class="pool_stats_scrt_to_dollar pool_past_prizes fst-italic"
+                >
                   (${{
                     coinConvert(
                       coinConvert(sefi_total_deposits, 6, "human", 1) *
@@ -45,13 +47,36 @@
 
       <div class="row g-0 mt-3 align-items-center">
         <div class="col-6 g-0 pool_stats_subheadings">Your deposits</div>
-        <div v-if="balance >= 9999" class="col-6">
+        <div v-if="vk" class="col-6">
           <div class="row">
             <div class="d-flex justify-content-end align-items-center">
+              <div
+                class="
+                  d-flex
+                  justify-content-end
+                  align-items-center
+                  account_winning_odds_value
+                  fst-italic
+                  me-3
+                "
+              >
+                <span v-if="balance > 9999">
+                  ({{
+                    coinConvert(
+                      (balance / scrt_total_deposits) * 100,
+                      0,
+                      "human",
+                      2
+                    )
+                  }}%)
+                </span>
+                <span v-else> (0 %) </span>
+              </div>
               <div class="me-3">
-                <span>{{
+                <span v-if="balance >= 9999">{{
                   coinConvert(balance / 1000000, 0, "humans", 1)
                 }}</span>
+                <span v-else>0.0</span>
               </div>
 
               <div class="d-flex align-items-center">
@@ -176,6 +201,7 @@ export default {
   computed: {
     ...mapState(useSefiContractStore, ["sefi_token_current_price"]),
     ...mapState(useSefiStakepoolStore, [
+      "vk",
       "sefi_total_deposits",
       "sefi_total_rewards",
       "balance",

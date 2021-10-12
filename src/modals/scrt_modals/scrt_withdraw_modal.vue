@@ -16,13 +16,13 @@
           <div class="row m-0 p-0 deposit-modal-shape">
             <div class="row m-0 p-0 g-0">
               <div
-                class="col-6 d-flex justify-content-start align-items-center"
+                class="col-4 d-flex justify-content-start align-items-center"
               >
                 <span class="deposit-modal-heading">Withdraw</span>
               </div>
               <div
                 class="
-                  col-6
+                  col-8
                   d-flex
                   justify-content-end
                   align-items-center
@@ -42,7 +42,7 @@
 
             <div class="row m-0 p-0 mt-3 g-0">
               <div
-                class="col-6 d-flex justify-content-start align-items-center"
+                class="col-5 d-flex justify-content-start align-items-center"
               >
                 <span class="deposit-modal-available"
                   >Available for withdraw</span
@@ -51,7 +51,7 @@
               <div
                 v-if="available_tokens_for_withdrawl"
                 class="
-                  col-6
+                  col-7
                   d-flex
                   justify-content-end
                   align-items-center
@@ -95,7 +95,7 @@
 
               <div
                 class="
-                  col-6
+                  col-7
                   d-flex
                   justify-content-end
                   align-items-center

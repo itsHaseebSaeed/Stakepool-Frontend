@@ -11,7 +11,7 @@ const ScrtStakepoolContractAddress =
   "secret15wp0p3mlmdr8hy7elc4zuqrm5qmynwwlcqmeax";
 
 const SefiStakepoolContractAddress =
-  "secret1xj3v5q0q0p5khvark9hmcjrdxrjgh9zqsq7lhg";
+  "secret1h4qvmwdyhj3lx6pu94uuwq62zvaxg98y3u7cr6";
 
 const SefiTokenContractAddress =
   "secret12q2c5s5we5zn9pq43l0rlsygtql6646my0sqfm";

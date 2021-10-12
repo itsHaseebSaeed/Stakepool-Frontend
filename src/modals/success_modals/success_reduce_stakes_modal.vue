@@ -58,7 +58,10 @@
               </div>
             </div>
 
-            <div class="row g-0 mt-3 text-center text-warning btn">
+            <div
+              v-if="denom == 'SEFI'"
+              class="row g-0 mt-3 text-center text-warning btn"
+            >
               <a @click="withdrawModal()">CLICK HERE TO WITHDRAW</a>
             </div>
           </div>

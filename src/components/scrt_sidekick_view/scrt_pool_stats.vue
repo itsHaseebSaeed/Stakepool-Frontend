@@ -47,7 +47,7 @@
 
       <div class="row g-0 mt-3 align-items-center">
         <div class="col-6 g-0 pool_stats_subheadings">Your deposits</div>
-        <div v-if="user_deposits >= 9999" class="col-6">
+        <div v-if="vk" class="col-6">
           <div class="d-flex justify-content-end align-items-center">
             <div
               class="
@@ -59,7 +59,7 @@
                 me-3
               "
             >
-              <span>
+              <span v-if="user_deposits > 9999">
                 ({{
                   coinConvert(
                     (user_deposits / scrt_total_deposits) * 100,
@@ -69,11 +69,14 @@
                   )
                 }}%)
               </span>
+              <span v-else> (0 %) </span>
             </div>
+
             <div class="me-3">
-              <span>{{
+              <span v-if="user_deposits > 9999">{{
                 coinConvert(user_deposits / 1000000, 0, "humans", 1)
               }}</span>
+              <span v-else>0.0</span>
             </div>
 
             <div class="d-flex align-items-center">
@@ -194,6 +197,7 @@ import { useScrtStakepoolStore } from "../../contracts";
 export default {
   computed: {
     ...mapState(useScrtStakepoolStore, [
+      "vk",
       "scrt_total_deposits",
       "scrt_total_rewards",
       "scrt_token_current_price",

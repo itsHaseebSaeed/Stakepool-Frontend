@@ -159,8 +159,9 @@ export const ScrtStakepoolDefinition = {
           msg
         );
         this.user_deposits = res.balance.amount;
+        console.log(res);
       } catch (err) {
-        console.error(err);
+        console.log(err);
       }
     },
 
@@ -364,6 +365,9 @@ export const ScrtStakepoolDefinition = {
     },
 
     async scrtStakepoolWithdraw(amount) {
+      const fees = {
+        gas: "140000",
+      };
       let final_withdraw_amount_in_uscrt = amount.toString();
       if (final_withdraw_amount_in_uscrt > 0) {
         const msg = { withdraw: { amount: final_withdraw_amount_in_uscrt } };
@@ -387,6 +391,9 @@ export const ScrtStakepoolDefinition = {
     },
 
     async scrtStakepoolTriggerWithdraw(amount) {
+      const fees = {
+        gas: "450000",
+      };
       let final_trigger_amount_in_uscrt = amount.toString();
       const msg = {
         trigger_withdraw: { amount: final_trigger_amount_in_uscrt },

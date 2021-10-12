@@ -204,7 +204,6 @@ export default {
       depositamount: undefined,
       overflow_warning: undefined,
       underflow_warning: undefined,
-      local_balance: this.balance,
 
       on_going_transaction: undefined,
       successful: undefined,
@@ -258,9 +257,6 @@ export default {
         this.scrt_total_deposits = temp_array[2];
         this.staked_total = temp_array[3];
         if (this.successful) {
-          useWalletStore.$state({
-            balance: useWalletStore.balance - bg_depositamount,
-          });
           this.on_going_transaction = false;
           this.successful = false;
           this.$refs.closeBtn.click();

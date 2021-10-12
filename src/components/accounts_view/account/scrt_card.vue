@@ -149,7 +149,7 @@
                   class="img-fluid logo-size"
                 />
                 <div class="account_time_font">
-                  in {{ days1 }}{{ days2 }}d ,{{ hours2 }}{{ hours1 }}h ,{{
+                  in {{ days1 }}{{ days2 }}d ,{{ hours1 }}{{ hours2 }}h ,{{
                     mins1
                   }}{{ mins2 }}m
                 </div>
@@ -163,6 +163,7 @@
                     class="btn account_reduce_stakes_withdraw_button"
                     data-bs-toggle="modal"
                     data-bs-target="#scrtReduceStakeModal"
+                    :disabled="user_deposits == 0"
                   >
                     Reduce Stakes
                   </button>

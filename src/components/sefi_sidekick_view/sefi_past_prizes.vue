@@ -3,7 +3,7 @@
     <div class="row mt-3 p-3 pool_view_card">
       <div class="row w4 fs-2 w5">Past Prizes</div>
 
-      <div class="row g-0 mt-3" v-for="line in past_rewards" v-bind:key="line">
+      <div class="row g-0 mt-3" v-for="line in columns" v-bind:key="line">
         <div class="row g-0">
           <div class="col-6 pool_stats_subheadings">{{ line[1] }}</div>
           <div class="col-6 d-flex justify-content-end">
@@ -44,6 +44,18 @@
           </div>
         </div>
       </div>
+      <div class="mt-5 row d-flex justify-content-end g-0">
+        <div class="col-sm-9 col-7"></div>
+        <div class="col-sm-3">
+          <button
+            class="btn deposit_button"
+            @click="visible = visible + 5"
+            :disabled="visible >= max"
+          >
+            See More
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -54,14 +66,31 @@ import { mapState, mapActions } from "pinia";
 import { coinConvert } from "@stakeordie/griptape.js";
 
 export default {
+  data() {
+    return {
+      visible: 5,
+      max: 100,
+    };
+  },
   created() {
     this.sefiStakepoolGetPublicPastRewards();
   },
-  // data() {},
   computed: {
     ...mapState(useSefiContractStore, ["sefi_token_current_price"]),
-
     ...mapState(useSefiStakepoolStore, ["past_rewards"]),
+    columns() {
+      let columns = [];
+      if (this.past_rewards) {
+        this.max = this.past_rewards.length;
+
+        for (let i = 0; i < this.visible; i++) {
+          if (i + 1 <= this.past_rewards.length) {
+            columns.push(this.past_rewards[i]);
+          }
+        }
+      }
+      return columns;
+    },
   },
   methods: {
     ...mapActions(useSefiStakepoolStore, ["sefiStakepoolGetPublicPastRewards"]),
