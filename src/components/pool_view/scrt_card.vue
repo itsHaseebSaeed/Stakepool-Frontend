@@ -18,7 +18,7 @@
       <div class="col-lg-4 text-white m-auto mb-3">
         <div class="d-block clearfix">
           <div
-            v-if="scrt_total_rewards"
+            v-if="scrt_total_rewards != undefined"
             class="d-flex justify-content-center prize_amount"
           >
             ${{

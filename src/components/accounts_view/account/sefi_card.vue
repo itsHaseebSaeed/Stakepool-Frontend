@@ -148,11 +148,12 @@
                   alt="LOGO Image"
                   class="img-fluid logo-size"
                 />
-                <div class="account_time_font">
+                <div v-if="!isNaN(days1)" class="account_time_font">
                   in {{ days1 }}{{ days2 }}d ,{{ hours1 }}{{ hours2 }}h ,{{
                     mins1
                   }}{{ mins2 }}m
                 </div>
+                <div v-else class="account_time_font">in 00d ,00h ,00m</div>
               </span>
             </div>
             <div class="row d-flex mt-2 justify-content-around">

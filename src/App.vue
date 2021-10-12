@@ -163,14 +163,12 @@ export default {
       1000
     );
     this.timer3 = window.setInterval(this.scrtStakepoolSyncTimer, 1000);
-
     this.timer4 = window.setInterval(this.sefiStakepoolSyncTimer, 1000);
   },
 
   methods: {
     ...mapActions(useScrtStakepoolStore, [
       "scrtStakepoolSyncTimer",
-
       "scrtStakepoolPoolViewEntryPoint",
       "scrtStakepoolAccountViewEntryPoint",
     ]),

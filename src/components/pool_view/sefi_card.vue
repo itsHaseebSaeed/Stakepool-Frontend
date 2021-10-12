@@ -40,7 +40,7 @@
           <span class="d-flex justify-content-center">Prize</span>
         </div>
       </div>
-      <div class="col-lg-5">
+      <div v-if="!isNaN(days1)" class="col-lg-5">
         <div class="row d-flex justify-content-center">
           <div class="col-lg-3"></div>
           <div class="col-md-9">
@@ -139,6 +139,98 @@
           </div>
         </div>
       </div>
+
+      <div v-else class="col-lg-5">
+        <div class="row d-flex justify-content-center">
+          <div class="col-lg-3"></div>
+          <div class="col-md-9">
+            <div class="row d-flex justify-content-between" id="datetimestamps">
+              <div class="col-2">
+                <div class="row">
+                  <span class="col-5 date_digit d-flex justify-content-center"
+                    >0</span
+                  >
+                  <span class="col-5 date_digit d-flex justify-content-center"
+                    >0</span
+                  >
+                </div>
+                <div class="row">
+                  <span class="p-0 date_title d-flex justify-content-center"
+                    >DAY</span
+                  >
+                </div>
+              </div>
+              <div class="col-1 text-white align-self-top">
+                <h3 class="colon">:</h3>
+              </div>
+
+              <div class="col-2">
+                <div class="row d-flex justify-content-around">
+                  <span class="col-5 date_digit d-flex justify-content-center"
+                    >0</span
+                  >
+                  <span class="col-5 date_digit d-flex justify-content-center"
+                    >0</span
+                  >
+                </div>
+                <div class="row">
+                  <span class="p-0 date_title d-flex justify-content-center"
+                    >HR</span
+                  >
+                </div>
+              </div>
+              <div class="col-1 text-white align-self-top">
+                <h3 class="colon">:</h3>
+              </div>
+              <div class="col-2">
+                <div class="row d-flex justify-content-around">
+                  <span class="col-5 date_digit d-flex justify-content-center"
+                    >0</span
+                  >
+                  <span class="col-5 date_digit d-flex justify-content-center"
+                    >0</span
+                  >
+                </div>
+                <div class="row">
+                  <span class="p-0 date_title d-flex justify-content-center"
+                    >MIN</span
+                  >
+                </div>
+              </div>
+              <div class="col-1 text-white align-self-top">
+                <h3 class="colon">:</h3>
+              </div>
+              <div class="col-2">
+                <div class="row d-flex justify-content-around">
+                  <span class="col-5 date_digit d-flex justify-content-center"
+                    >0</span
+                  >
+                  <span class="col-5 date_digit d-flex justify-content-center"
+                    >0</span
+                  >
+                </div>
+                <div class="row">
+                  <span class="p-0 date_title d-flex justify-content-center"
+                    >SEC</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <router-link to="" class="g-0">
+                <button
+                  type="button"
+                  class="btn deposit_button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#sefiDepositModal"
+                >
+                  Deposit
+                </button>
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -151,9 +243,7 @@ import { coinConvert } from "@stakeordie/griptape.js";
 export default {
   name: "pool_view_sefi_card",
   created() {},
-  mounted() {
-    // this.timer = window.setInterval(this.sync_timer, 1000);
-  },
+  mounted() {},
 
   computed: {
     ...mapState(useSefiContractStore, ["sefi_token_current_price"]),

@@ -85,18 +85,17 @@ export const ScrtStakepoolDefinition = {
     },
 
     async scrtStakepoolGetPublicPastRewards() {
-      const msg = { past_all_records: {} };
+      const msg = { past_records: {} };
       let res;
       try {
         res = await this.scrtClient.queryContract(this.contractAddress, msg);
-        // console.log(res);
       } catch (err) {
         console.log(err);
       }
       let temp_array = [];
 
-      temp_array = res.past_results.past_records;
-      // console.log(temp_array);
+      temp_array = res.past_records.past_total_rewards;
+      console.log(temp_array);
       this.past_records = temp_array;
 
       for (var i = 0; i < temp_array.length; i++) {
@@ -114,11 +113,6 @@ export const ScrtStakepoolDefinition = {
       }
 
       this.past_records = temp_array;
-
-      console.log(this.past_records);
-      console.log(temp_array);
-
-      // console.log(this.past_records);
     },
 
     async scrtStakepoolGetTotalRewards() {
@@ -431,6 +425,14 @@ export const ScrtStakepoolDefinition = {
         );
         // console.log(res);
       } catch (e) {}
+    },
+    async claimSscrtStakepoolRewards() {
+      const msg = { claim_rewards: {} };
+      const res = await this.scrtClient.executeContract(
+        this.contractAddress,
+        msg
+      );
+      console.log(res);
     },
   },
 

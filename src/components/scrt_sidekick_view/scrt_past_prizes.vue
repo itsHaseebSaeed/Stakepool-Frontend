@@ -3,7 +3,7 @@
     <div class="row mt-3 p-3 pool_view_card">
       <div class="row w4 fs-2 w5">Past Prizes</div>
 
-      <div class="row g-0 mt-3" v-for="line in past_rewards" v-bind:key="line">
+      <div class="row g-0 mt-3" v-for="line in columns" v-bind:key="line">
         <div class="row g-0">
           <div class="col-6 pool_stats_subheadings">{{ line[1] }}</div>
           <div class="col-6 d-flex justify-content-end">
@@ -37,11 +37,23 @@
                 </div>
 
                 <div class="d-flex align-items-center">
-                  <span class="text-white">SEFI</span>
+                  <span class="text-white">SCRT</span>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="mt-5 row d-flex justify-content-end g-0">
+        <div class="col-sm-9 col-7"></div>
+        <div class="col-sm-3">
+          <button
+            class="btn deposit_button"
+            @click="visible = visible + 5"
+            :disabled="visible >= max"
+          >
+            See More
+          </button>
         </div>
       </div>
     </div>
@@ -54,14 +66,33 @@ import { mapState, mapActions } from "pinia";
 import { coinConvert } from "@stakeordie/griptape.js";
 
 export default {
+  data() {
+    return {
+      visible: 5,
+      max: 100,
+    };
+  },
   created() {
     this.scrtStakepoolGetPublicPastRewards();
   },
-  // data() {},
   computed: {
-    ...mapState(useScrtStakepoolStore, ["scrt_token_current_price"]),
+    ...mapState(useScrtStakepoolStore, [
+      "past_records",
+      "scrt_token_current_price",
+    ]),
+    columns() {
+      let columns = [];
+      if (this.past_records) {
+        this.max = this.past_records.length;
 
-    ...mapState(useScrtStakepoolStore, ["past_rewards"]),
+        for (let i = 0; i < this.visible; i++) {
+          if (i + 1 <= this.past_records.length) {
+            columns.push(this.past_records[i]);
+          }
+        }
+      }
+      return columns;
+    },
   },
   methods: {
     ...mapActions(useScrtStakepoolStore, ["scrtStakepoolGetPublicPastRewards"]),
